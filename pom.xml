@@ -199,10 +199,9 @@
 	</dependency>
 
 	<dependency>
-	  <groupId>javax.servlet</groupId>
-	  <artifactId>javax.servlet-api</artifactId>
-	  <version>4.0.1</version>
-	  <scope>provided</scope>
+	  <groupId>javax.servlet.jsp.jstl</groupId>
+	  <artifactId>jstl</artifactId>
+	  <version>1.2</version>
 	</dependency>
 
   </dependencies>
@@ -222,8 +221,8 @@
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
-          <webappDirectory>${basedir}/WebRoot</webappDirectory>
-          <warSourceDirectory>${basedir}/WebRoot</warSourceDirectory>
+          <webappDirectory>${basedir}/web</webappDirectory>
+          <warSourceDirectory>${basedir}/web</warSourceDirectory>
         </configuration>
       </plugin>
       <plugin>

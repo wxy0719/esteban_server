@@ -38,9 +38,9 @@ import com.esteban.framework.utils.Page;
 @Intercepts({ @Signature(type = StatementHandler.class, method = "prepare", args = { Connection.class }) })
 public class PagePlugin implements Interceptor {
 
-    // ????StatementHandler?prepare????????
-    private static String dialect = ""; // ?????
-    private static String pageSqlId = ""; // mapper.xml??????ID(????)
+    // StatementHandlerprepare
+    private static String dialect = ""; // 
+    private static String pageSqlId = ""; // mapper.xmlID()
 
     public Object intercept(Invocation ivk) throws Throwable {
         if (ivk.getTarget() instanceof RoutingStatementHandler) {
@@ -48,14 +48,14 @@ public class PagePlugin implements Interceptor {
             BaseStatementHandler delegate = (BaseStatementHandler) ReflectHelper.getValueByFieldName(statementHandler, "delegate");
             MappedStatement mappedStatement = (MappedStatement) ReflectHelper.getValueByFieldName(delegate, "mappedStatement");
             boolean isMatch = mappedStatement.getId().matches(pageSqlId);
-            if (isMatch) { // ???????SQL
+            if (isMatch) { // SQL
                 BoundSql boundSql = delegate.getBoundSql();
-                Object parameterObject = boundSql.getParameterObject();// ??SQL<select>?parameterType???????????Mapper????????????,???????
+                Object parameterObject = boundSql.getParameterObject();// SQL<select>parameterTypeMapper,
                 if (parameterObject == null) {
-                    throw new NullPointerException("parameterObject??????");
+                    throw new NullPointerException("parameterObject");
                 } else {
                     Page page = null;
-                    if (parameterObject instanceof Page) { // ????Page??
+                    if (parameterObject instanceof Page) { // Page
                         page = (Page) parameterObject;
                     } else {
 
@@ -73,7 +73,7 @@ public class PagePlugin implements Interceptor {
                         }
                     }
 
-                    if (!page.isShowAll()) { // ????
+                    if (!page.isShowAll()) { // 
                         Connection connection = (Connection) ivk.getArgs()[0];
                         String sql = boundSql.getSql();
                         String countSql = "select count(0) from (" + sql + ")  tmp_count";
@@ -96,9 +96,9 @@ public class PagePlugin implements Interceptor {
                             countStmt.close();
                         }
 
-                        page.setTotalRows(count); // ????
+                        page.setTotalRows(count); // 
                         String pageSql = generatePageSql(sql, page);
-                        ReflectHelper.setValueByFieldName(boundSql, "sql", pageSql); // ???sql?????BoundSql.
+                        ReflectHelper.setValueByFieldName(boundSql, "sql", pageSql); // sqlBoundSql.
                     }
                 }
             }
@@ -107,7 +107,7 @@ public class PagePlugin implements Interceptor {
     }
 
     /**
-     * ?SQL??(?)??,??org.apache.ibatis.executor.parameter.
+     * SQL(),org.apache.ibatis.executor.parameter.
      * DefaultParameterHandler
      *
      * @param ps
@@ -155,7 +155,7 @@ public class PagePlugin implements Interceptor {
     }
 
     /**
-     * ???????????????sql
+     * sql
      *
      * @param sql
      * @param page
