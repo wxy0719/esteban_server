@@ -1,31 +1,24 @@
 package com.esteban.controller.admin;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.esteban.framework.annotation.Login;
+import com.esteban.framework.utils.Page;
+import com.esteban.framework.utils.WebUtils;
+import com.esteban.model.*;
+import com.esteban.service.admin.IRightsLogic;
+import com.esteban.service.admin.IRightsTypeLogic;
+import com.esteban.service.admin.IRoleLogic;
+import com.esteban.service.admin.IUserLogic;
 import net.sf.json.JSONObject;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.esteban.framework.annotation.Login;
-import com.esteban.framework.utils.Page;
-import com.esteban.framework.utils.WebUtils;
-import com.esteban.model.Rights;
-import com.esteban.model.RightsType;
-import com.esteban.model.Role;
-import com.esteban.model.User;
-import com.esteban.model.UserExample;
-import com.esteban.service.admin.IRightsLogic;
-import com.esteban.service.admin.IRightsTypeLogic;
-import com.esteban.service.admin.IRoleLogic;
-import com.esteban.service.admin.IUserLogic;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
 
 @Controller("adminUserController")
 @RequestMapping("/admin/user")
