@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.esteban.dao.UserLogDao">
+  <resultMap id="BaseResultMap" type="com.esteban.model.UserLog">
+    <result column="f_USERLOGID" jdbcType="VARCHAR" property="userlogid" />
+    <result column="f_CONTENT" jdbcType="VARCHAR" property="content" />
+    <result column="f_USERID" jdbcType="VARCHAR" property="userid" />
+    <result column="f_IPADDR" jdbcType="VARCHAR" property="ipaddr" />
+    <result column="f_TIME" jdbcType="VARCHAR" property="time" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    f_USERLOGID, f_CONTENT, f_USERID, f_IPADDR, f_TIME
+  </sql>
+  <select id="selectByExample" parameterType="com.esteban.model.UserLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_userlog
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.esteban.model.UserLogExample">
+    delete from t_userlog
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.esteban.model.UserLog">
+    insert into t_userlog (f_USERLOGID, f_CONTENT, f_USERID, 
+      f_IPADDR, f_TIME)
+    values (#{userlogid,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
+      #{ipaddr,jdbcType=VARCHAR}, #{time,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.esteban.model.UserLog">
+    insert into t_userlog
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userlogid != null">
+        f_USERLOGID,
+      </if>
+      <if test="content != null">
+        f_CONTENT,
+      </if>
+      <if test="userid != null">
+        f_USERID,
+      </if>
+      <if test="ipaddr != null">
+        f_IPADDR,
+      </if>
+      <if test="time != null">
+        f_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userlogid != null">
+        #{userlogid,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="ipaddr != null">
+        #{ipaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.esteban.model.UserLogExample" resultType="java.lang.Long">
+    select count(*) from t_userlog
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_userlog
+    <set>
+      <if test="record.userlogid != null">
+        f_USERLOGID = #{record.userlogid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null">
+        f_CONTENT = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userid != null">
+        f_USERID = #{record.userid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ipaddr != null">
+        f_IPADDR = #{record.ipaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.time != null">
+        f_TIME = #{record.time,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_userlog
+    set f_USERLOGID = #{record.userlogid,jdbcType=VARCHAR},
+      f_CONTENT = #{record.content,jdbcType=VARCHAR},
+      f_USERID = #{record.userid,jdbcType=VARCHAR},
+      f_IPADDR = #{record.ipaddr,jdbcType=VARCHAR},
+      f_TIME = #{record.time,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<!-- 
+使用方法：
+到mybatis-generator-core-1.3.5-sources的目录下运行：
+java -jar mybatis-generator-core-1.3.5.jar -configfile generator.xml -overwrite
+ -->
+
+<generatorConfiguration>
+    <!-- 数据库驱动包位置 -->
+    <classPathEntry location="C:\Users\wxy07\Workspaces\MyEclipse 2017 CI\MavenTest\src\mysql-connector-java-3.1.14-bin.jar" /> 
+    <!-- <classPathEntry location="C:\oracle\product\10.2.0\db_1\jdbc\lib\ojdbc14.jar" />-->
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+        <!-- 数据库链接URL、用户名、密码 -->
+         <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://127.0.0.1:3306/esteban" userId="root" password="123456"> 
+        <!--<jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver" connectionURL="jdbc:oracle:thin:@localhost:1521:orcl" userId="msa" password="msa">-->
+        </jdbcConnection>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+        <!-- 生成实体类的包名和位置，这里配置将生成的实体类放在com.esteban.model这个包下 -->
+        <javaModelGenerator targetPackage="com.esteban.model" targetProject="C:\Users\wxy07\Workspaces\MyEclipse 2017 CI\MavenTest\src">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+        <!-- 生成的SQL映射文件包名和位置，这里配置将生成的SQL映射文件放在com.esteban.model.mapper这个包下 -->
+        <sqlMapGenerator targetPackage="com.esteban.model.mapper" targetProject="C:\Users\wxy07\Workspaces\MyEclipse 2017 CI\MavenTest\src">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+        <!-- 生成DAO的包名和位置，这里配置将生成的dao类放在com.esteban.dao这个包下 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.esteban.dao" targetProject="C:\Users\wxy07\Workspaces\MyEclipse 2017 CI\MavenTest\src">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+        
+        <!-- 要生成那些表(更改tableName和domainObjectName就可以) -->
+        <table tableName="t_user" domainObjectName="User" enableCountByExample="true" enableDeleteByPrimaryKey="true" enableInsert="true" enableSelectByExample="true" enableSelectByPrimaryKey="true" enableUpdateByExample="true" enableDeleteByExample="true">
+        	<columnRenamingRule searchString="^f_" replaceString="" />
+        </table>
+        <table tableName="t_ads" domainObjectName="Ads" enableCountByExample="true" enableDeleteByPrimaryKey="true" enableInsert="true" enableSelectByExample="true" enableSelectByPrimaryKey="true" enableUpdateByExample="true" enableDeleteByExample="true">
+        	<columnRenamingRule searchString="^f_" replaceString="" />
+        </table>
+        <table tableName="t_advice_user" domainObjectName="AdviceUser" enableCountByExample="true" enableDeleteByPrimaryKey="true" enableInsert="true" enableSelectByExample="true" enableSelectByPrimaryKey="true" enableUpdateByExample="true" enableDeleteByExample="true">
+        	<columnRenamingRule searchString="^f_" replaceString="" />
+        </table>
+        <table tableName="t_article" domainObjectName="Article" enableCountByExample="true" enableDeleteByPrimaryKey="true" enableInsert="true" enableSelectByExample="true" enableSelectByPrimaryKey="true" enableUpdateByExample="true" enableDeleteByExample="true">
+        	<columnRenamingRule searchString="^f_" replaceString="" />
+        </table>
+        <table tableName="t_article_type" domainObjectName="ArticleType" enableCountByExample="true" enableDeleteByPrimaryKey="true" enableInsert="true" enableSelectByExample="true" enableSelectByPrimaryKey="true" enableUpdateByExample="true" enableDeleteByExample="true">
+        	<columnRenamingRule searchString="^f_" replaceString="" />
+        </table>
+        <table tableName="t_config" domainObjectName="Config" enableCountByExample="true" enableDeleteByPrimaryKey="true" enableInsert="true" enableSelectByExample="true" enableSelectByPrimaryKey="true" enableUpdateByExample="true" enableDeleteByExample="true">
+        	<columnRenamingRule searchString="^f_" replaceString="" />
+        </table>
+        <table tableName="t_menutree" domainObjectName="MenuTree" enableCountByExample="true" enableDeleteByPrimaryKey="true" enableInsert="true" enableSelectByExample="true" enableSelectByPrimaryKey="true" enableUpdateByExample="true" enableDeleteByExample="true">
+        	<columnRenamingRule searchString="^f_" replaceString="" />
+        </table>
+        <table tableName="t_oper" domainObjectName="Oper" enableCountByExample="true" enableDeleteByPrimaryKey="true" enableInsert="true" enableSelectByExample="true" enableSelectByPrimaryKey="true" enableUpdateByExample="true" enableDeleteByExample="true">
+        	<columnRenamingRule searchString="^f_" replaceString="" />
+        </table>
+        <table tableName="t_rights" domainObjectName="Rights" enableCountByExample="true" enableDeleteByPrimaryKey="true" enableInsert="true" enableSelectByExample="true" enableSelectByPrimaryKey="true" enableUpdateByExample="true" enableDeleteByExample="true">
+        	<columnRenamingRule searchString="^f_" replaceString="" />
+        </table>
+        <table tableName="t_rights_type" domainObjectName="RightsType" enableCountByExample="true" enableDeleteByPrimaryKey="true" enableInsert="true" enableSelectByExample="true" enableSelectByPrimaryKey="true" enableUpdateByExample="true" enableDeleteByExample="true">
+        	<columnRenamingRule searchString="^f_" replaceString="" />
+        </table>
+        <table tableName="t_role" domainObjectName="Role" enableCountByExample="true" enableDeleteByPrimaryKey="true" enableInsert="true" enableSelectByExample="true" enableSelectByPrimaryKey="true" enableUpdateByExample="true" enableDeleteByExample="true">
+        	<columnRenamingRule searchString="^f_" replaceString="" />
+        </table>
+        <table tableName="t_userlog" domainObjectName="UserLog" enableCountByExample="true" enableDeleteByPrimaryKey="true" enableInsert="true" enableSelectByExample="true" enableSelectByPrimaryKey="true" enableUpdateByExample="true" enableDeleteByExample="true">
+        	<columnRenamingRule searchString="^f_" replaceString="" />
+        </table>
+        <table tableName="t_villa" domainObjectName="Villa" enableCountByExample="true" enableDeleteByPrimaryKey="true" enableInsert="true" enableSelectByExample="true" enableSelectByPrimaryKey="true" enableUpdateByExample="true" enableDeleteByExample="true">
+        	<columnRenamingRule searchString="^f_" replaceString="" />
+        </table>
+        <table tableName="t_wenku" domainObjectName="Wenku" enableCountByExample="true" enableDeleteByPrimaryKey="true" enableInsert="true" enableSelectByExample="true" enableSelectByPrimaryKey="true" enableUpdateByExample="true" enableDeleteByExample="true">
+        	<columnRenamingRule searchString="^f_" replaceString="" />
+        </table>
+    </context>
+</generatorConfiguration>

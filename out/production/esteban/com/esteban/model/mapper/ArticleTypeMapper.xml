@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.esteban.dao.ArticleTypeDao">
+  <resultMap id="BaseResultMap" type="com.esteban.model.ArticleType">
+    <result column="f_id" jdbcType="VARCHAR" property="id" />
+    <result column="f_name" jdbcType="VARCHAR" property="name" />
+    <result column="f_des" jdbcType="VARCHAR" property="des" />
+    <result column="f_status" jdbcType="VARCHAR" property="status" />
+    <result column="f_code" jdbcType="VARCHAR" property="code" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    f_id, f_name, f_des, f_status, f_code
+  </sql>
+  <select id="selectByExample" parameterType="com.esteban.model.ArticleTypeExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_article_type
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.esteban.model.ArticleTypeExample">
+    delete from t_article_type
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.esteban.model.ArticleType">
+    insert into t_article_type (f_id, f_name, f_des, 
+      f_status, f_code)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{des,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.esteban.model.ArticleType">
+    insert into t_article_type
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        f_id,
+      </if>
+      <if test="name != null">
+        f_name,
+      </if>
+      <if test="des != null">
+        f_des,
+      </if>
+      <if test="status != null">
+        f_status,
+      </if>
+      <if test="code != null">
+        f_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="des != null">
+        #{des,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.esteban.model.ArticleTypeExample" resultType="java.lang.Long">
+    select count(*) from t_article_type
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_article_type
+    <set>
+      <if test="record.id != null">
+        f_id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        f_name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.des != null">
+        f_des = #{record.des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        f_status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.code != null">
+        f_code = #{record.code,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_article_type
+    set f_id = #{record.id,jdbcType=VARCHAR},
+      f_name = #{record.name,jdbcType=VARCHAR},
+      f_des = #{record.des,jdbcType=VARCHAR},
+      f_status = #{record.status,jdbcType=VARCHAR},
+      f_code = #{record.code,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  <select id="listByPage" resultMap="BaseResultMap">
+	    select * from t_article_type t
+	    	where 1=1
+	    	<if test="t!=null">
+		    	<if test="t.name!=null and t.name!=''">
+		    	    and t.f_name like CONCAT('%','${t.name}','%' )
+		    	</if>
+	    	</if>
+	</select>
+</mapper>

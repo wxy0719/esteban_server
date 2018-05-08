@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	包含以下属性：
+	name：字段对应名称（唯一）
+	titleText：导出时表头的列名
+	isExportData：是否导出数据（密码类不展示）
+	isNumber：是否数字类型
+	digit：数字类型保留位数
+	isDate：是否时间类型
+	formatStr：时间类型格式化格式
+	isConvert：是否需要对值进行转换
+	convertStr：转换对应的值。参照格式 (1:是;0：否;)最后一个分号后是默认值
+	convertDefault：转换值没有匹配成功时，默认赋值
+ -->
+<query>
+	<table id="queryArticle">
+		<cloumn name="f_title" titleText="标题" ></cloumn>
+		<cloumn name="f_author" titleText="作者" ></cloumn>
+		<cloumn name="f_createTime" titleText="创建时间" isDate="true" formatStr="yyyy-MM-dd HH:mm"></cloumn>
+		<cloumn name="f_status" titleText="状态" isConvert="true" convertStr="1=是;0=否" convertDefault="未知"></cloumn>
+		<cloumn name="f_isTop" titleText="置顶" isConvert="true" convertStr="1=是;0=否" convertDefault="未知"></cloumn>
+		<cloumn name="f_name" titleText="文章类别"></cloumn>
+	</table>
+	
+</query>

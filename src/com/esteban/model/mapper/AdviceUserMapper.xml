@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.esteban.dao.AdviceUserDao">
+  <resultMap id="BaseResultMap" type="com.esteban.model.AdviceUser">
+    <result column="f_ID" jdbcType="VARCHAR" property="id" />
+    <result column="f_USERID" jdbcType="VARCHAR" property="userid" />
+    <result column="f_IPADR" jdbcType="VARCHAR" property="ipadr" />
+    <result column="f_TIME" jdbcType="VARCHAR" property="time" />
+    <result column="f_TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="f_AREANAME" jdbcType="VARCHAR" property="areaname" />
+    <result column="f_PROVNAME" jdbcType="VARCHAR" property="provname" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    f_ID, f_USERID, f_IPADR, f_TIME, f_TYPE, f_AREANAME, f_PROVNAME
+  </sql>
+  <select id="selectByExample" parameterType="com.esteban.model.AdviceUserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_advice_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.esteban.model.AdviceUserExample">
+    delete from t_advice_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.esteban.model.AdviceUser">
+    insert into t_advice_user (f_ID, f_USERID, f_IPADR, 
+      f_TIME, f_TYPE, f_AREANAME, 
+      f_PROVNAME)
+    values (#{id,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{ipadr,jdbcType=VARCHAR}, 
+      #{time,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{areaname,jdbcType=VARCHAR}, 
+      #{provname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.esteban.model.AdviceUser">
+    insert into t_advice_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        f_ID,
+      </if>
+      <if test="userid != null">
+        f_USERID,
+      </if>
+      <if test="ipadr != null">
+        f_IPADR,
+      </if>
+      <if test="time != null">
+        f_TIME,
+      </if>
+      <if test="type != null">
+        f_TYPE,
+      </if>
+      <if test="areaname != null">
+        f_AREANAME,
+      </if>
+      <if test="provname != null">
+        f_PROVNAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="ipadr != null">
+        #{ipadr,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="areaname != null">
+        #{areaname,jdbcType=VARCHAR},
+      </if>
+      <if test="provname != null">
+        #{provname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.esteban.model.AdviceUserExample" resultType="java.lang.Long">
+    select count(*) from t_advice_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_advice_user
+    <set>
+      <if test="record.id != null">
+        f_ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userid != null">
+        f_USERID = #{record.userid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ipadr != null">
+        f_IPADR = #{record.ipadr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.time != null">
+        f_TIME = #{record.time,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        f_TYPE = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.areaname != null">
+        f_AREANAME = #{record.areaname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.provname != null">
+        f_PROVNAME = #{record.provname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_advice_user
+    set f_ID = #{record.id,jdbcType=VARCHAR},
+      f_USERID = #{record.userid,jdbcType=VARCHAR},
+      f_IPADR = #{record.ipadr,jdbcType=VARCHAR},
+      f_TIME = #{record.time,jdbcType=VARCHAR},
+      f_TYPE = #{record.type,jdbcType=VARCHAR},
+      f_AREANAME = #{record.areaname,jdbcType=VARCHAR},
+      f_PROVNAME = #{record.provname,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

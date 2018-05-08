@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.esteban.dao.AdsDao">
+  <resultMap id="BaseResultMap" type="com.esteban.model.Ads">
+    <result column="f_id" jdbcType="VARCHAR" property="id" />
+    <result column="f_title" jdbcType="VARCHAR" property="title" />
+    <result column="f_shortDes" jdbcType="VARCHAR" property="shortdes" />
+    <result column="f_art" jdbcType="VARCHAR" property="art" />
+    <result column="f_des" jdbcType="VARCHAR" property="des" />
+    <result column="f_img_path" jdbcType="VARCHAR" property="imgPath" />
+    <result column="f_img_detail" jdbcType="VARCHAR" property="imgDetail" />
+    <result column="f_create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="f_create_oper" jdbcType="VARCHAR" property="createOper" />
+    <result column="f_url" jdbcType="VARCHAR" property="url" />
+    <result column="f_isTop" jdbcType="VARCHAR" property="istop" />
+    <result column="f_status" jdbcType="VARCHAR" property="status" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    f_id, f_title, f_shortDes, f_art, f_des, f_img_path, f_img_detail, f_create_time, 
+    f_create_oper, f_url, f_isTop, f_status
+  </sql>
+  <select id="selectByExample" parameterType="com.esteban.model.AdsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_ads
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.esteban.model.AdsExample">
+    delete from t_ads
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.esteban.model.Ads">
+    insert into t_ads (f_id, f_title, f_shortDes, 
+      f_art, f_des, f_img_path, 
+      f_img_detail, f_create_time, f_create_oper, 
+      f_url, f_isTop, f_status)
+    values (#{id,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{shortdes,jdbcType=VARCHAR}, 
+      #{art,jdbcType=VARCHAR}, #{des,jdbcType=VARCHAR}, #{imgPath,jdbcType=VARCHAR}, 
+      #{imgDetail,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{createOper,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{istop,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.esteban.model.Ads">
+    insert into t_ads
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        f_id,
+      </if>
+      <if test="title != null">
+        f_title,
+      </if>
+      <if test="shortdes != null">
+        f_shortDes,
+      </if>
+      <if test="art != null">
+        f_art,
+      </if>
+      <if test="des != null">
+        f_des,
+      </if>
+      <if test="imgPath != null">
+        f_img_path,
+      </if>
+      <if test="imgDetail != null">
+        f_img_detail,
+      </if>
+      <if test="createTime != null">
+        f_create_time,
+      </if>
+      <if test="createOper != null">
+        f_create_oper,
+      </if>
+      <if test="url != null">
+        f_url,
+      </if>
+      <if test="istop != null">
+        f_isTop,
+      </if>
+      <if test="status != null">
+        f_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="shortdes != null">
+        #{shortdes,jdbcType=VARCHAR},
+      </if>
+      <if test="art != null">
+        #{art,jdbcType=VARCHAR},
+      </if>
+      <if test="des != null">
+        #{des,jdbcType=VARCHAR},
+      </if>
+      <if test="imgPath != null">
+        #{imgPath,jdbcType=VARCHAR},
+      </if>
+      <if test="imgDetail != null">
+        #{imgDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createOper != null">
+        #{createOper,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="istop != null">
+        #{istop,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.esteban.model.AdsExample" resultType="java.lang.Long">
+    select count(*) from t_ads
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_ads
+    <set>
+      <if test="record.id != null">
+        f_id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.title != null">
+        f_title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shortdes != null">
+        f_shortDes = #{record.shortdes,jdbcType=VARCHAR},
+      </if>
+      <if test="record.art != null">
+        f_art = #{record.art,jdbcType=VARCHAR},
+      </if>
+      <if test="record.des != null">
+        f_des = #{record.des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imgPath != null">
+        f_img_path = #{record.imgPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imgDetail != null">
+        f_img_detail = #{record.imgDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        f_create_time = #{record.createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createOper != null">
+        f_create_oper = #{record.createOper,jdbcType=VARCHAR},
+      </if>
+      <if test="record.url != null">
+        f_url = #{record.url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.istop != null">
+        f_isTop = #{record.istop,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        f_status = #{record.status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_ads
+    set f_id = #{record.id,jdbcType=VARCHAR},
+      f_title = #{record.title,jdbcType=VARCHAR},
+      f_shortDes = #{record.shortdes,jdbcType=VARCHAR},
+      f_art = #{record.art,jdbcType=VARCHAR},
+      f_des = #{record.des,jdbcType=VARCHAR},
+      f_img_path = #{record.imgPath,jdbcType=VARCHAR},
+      f_img_detail = #{record.imgDetail,jdbcType=VARCHAR},
+      f_create_time = #{record.createTime,jdbcType=VARCHAR},
+      f_create_oper = #{record.createOper,jdbcType=VARCHAR},
+      f_url = #{record.url,jdbcType=VARCHAR},
+      f_isTop = #{record.istop,jdbcType=VARCHAR},
+      f_status = #{record.status,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  <select id="listByPage" resultMap="BaseResultMap">
+	    select * from t_ads t
+	    	where 1=1
+	    	<if test="t!=null">
+		    	<if test="t.des!=null and t.des!=''">
+		    	    and t.f_des like CONCAT('%','${t.des}','%' )
+		    	</if>
+		    	<if test="t.status!=null and t.status!=''">
+		    	    and t.f_status like CONCAT('%','${t.status}','%' )
+		    	</if>
+	    	</if>
+	</select>
+</mapper>

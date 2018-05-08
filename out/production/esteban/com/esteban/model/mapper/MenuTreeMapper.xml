@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.esteban.dao.MenuTreeDao">
+  <resultMap id="BaseResultMap" type="com.esteban.model.MenuTree">
+    <result column="f_id" jdbcType="VARCHAR" property="id" />
+    <result column="f_name" jdbcType="VARCHAR" property="name" />
+    <result column="f_isforder" jdbcType="VARCHAR" property="isforder" />
+    <result column="f_url" jdbcType="VARCHAR" property="url" />
+    <result column="f_node_grade" jdbcType="VARCHAR" property="nodeGrade" />
+    <result column="f_parent_node" jdbcType="VARCHAR" property="parentNode" />
+    <result column="f_node_img" jdbcType="VARCHAR" property="nodeImg" />
+    <result column="f_status" jdbcType="VARCHAR" property="status" />
+    <result column="f_order" jdbcType="VARCHAR" property="order" />
+    <result column="f_right_no" jdbcType="VARCHAR" property="rightNo" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    f_id, f_name, f_isforder, f_url, f_node_grade, f_parent_node, f_node_img, f_status, 
+    f_order, f_right_no
+  </sql>
+  <select id="selectByExample" parameterType="com.esteban.model.MenuTreeExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_menutree
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.esteban.model.MenuTreeExample">
+    delete from t_menutree
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.esteban.model.MenuTree">
+    insert into t_menutree (f_id, f_name, f_isforder, 
+      f_url, f_node_grade, f_parent_node, 
+      f_node_img, f_status, f_order, 
+      f_right_no)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{isforder,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{nodeGrade,jdbcType=VARCHAR}, #{parentNode,jdbcType=VARCHAR}, 
+      #{nodeImg,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{order,jdbcType=VARCHAR}, 
+      #{rightNo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.esteban.model.MenuTree">
+    insert into t_menutree
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        f_id,
+      </if>
+      <if test="name != null">
+        f_name,
+      </if>
+      <if test="isforder != null">
+        f_isforder,
+      </if>
+      <if test="url != null">
+        f_url,
+      </if>
+      <if test="nodeGrade != null">
+        f_node_grade,
+      </if>
+      <if test="parentNode != null">
+        f_parent_node,
+      </if>
+      <if test="nodeImg != null">
+        f_node_img,
+      </if>
+      <if test="status != null">
+        f_status,
+      </if>
+      <if test="order != null">
+        f_order,
+      </if>
+      <if test="rightNo != null">
+        f_right_no,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="isforder != null">
+        #{isforder,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeGrade != null">
+        #{nodeGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="parentNode != null">
+        #{parentNode,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeImg != null">
+        #{nodeImg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="order != null">
+        #{order,jdbcType=VARCHAR},
+      </if>
+      <if test="rightNo != null">
+        #{rightNo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.esteban.model.MenuTreeExample" resultType="java.lang.Long">
+    select count(*) from t_menutree
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_menutree
+    <set>
+      <if test="record.id != null">
+        f_id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        f_name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isforder != null">
+        f_isforder = #{record.isforder,jdbcType=VARCHAR},
+      </if>
+      <if test="record.url != null">
+        f_url = #{record.url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nodeGrade != null">
+        f_node_grade = #{record.nodeGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentNode != null">
+        f_parent_node = #{record.parentNode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nodeImg != null">
+        f_node_img = #{record.nodeImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        f_status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.order != null">
+        f_order = #{record.order,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rightNo != null">
+        f_right_no = #{record.rightNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_menutree
+    set f_id = #{record.id,jdbcType=VARCHAR},
+      f_name = #{record.name,jdbcType=VARCHAR},
+      f_isforder = #{record.isforder,jdbcType=VARCHAR},
+      f_url = #{record.url,jdbcType=VARCHAR},
+      f_node_grade = #{record.nodeGrade,jdbcType=VARCHAR},
+      f_parent_node = #{record.parentNode,jdbcType=VARCHAR},
+      f_node_img = #{record.nodeImg,jdbcType=VARCHAR},
+      f_status = #{record.status,jdbcType=VARCHAR},
+      f_order = #{record.order,jdbcType=VARCHAR},
+      f_right_no = #{record.rightNo,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  <select id="queryMenuTree" resultMap="BaseResultMap">
+		select t.* from t_menutree t
+			where t.f_node_grade = (#{grade}+1)
+				and t.f_parent_node = #{parentNode}
+				and t.f_status = '1'
+				<if test="rights != null">
+					and t.f_right_no in 
+					<foreach item="right" collection="rights" open="(" separator="," close=")">
+		              #{right}
+		            </foreach>
+				</if>
+            order by t.f_order
+	</select>
+</mapper>

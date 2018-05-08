@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" 
+	xmlns="http://java.sun.com/xml/ns/javaee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+  	<display-name>MavenTestProject</display-name>
+  	<description>this is a Maven Test project!</description>
+	
+  	<welcome-file-list>
+    	<welcome-file>index.jsp</welcome-file>
+  	</welcome-file-list>
+  
+  	<!-- 配置参数，通过param-name来进行匹配 （此处只做测试保存）-->
+  	<context-param>
+  		<param-name>MavenTest</param-name>
+  		<param-value>one</param-value>
+  	</context-param>
+  	
+  	<!-- spring 配置文件读取位置 -->
+  	<context-param>
+  		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath*:com/esteban/resource/spring/applicationContext.xml, 
+			classpath*:com/esteban/resource/spring/HessianService-client.xml
+		</param-value>
+  	</context-param>
+  	<!-- spring 监听器配置 -->
+  	<listener>
+  		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  		<!-- 获取springBeanFactory （实用） -->
+  		<listener-class>com.esteban.framework.listener.InitListener</listener-class>
+  	</listener>
+  	
+  	<!-- 定义LOG4J监听器 -->   
+	<listener>   
+	   <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>   
+	</listener>
+  
+  	<filter>
+		<filter-name>EncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+  	</filter>
+  	<filter-mapping>
+		<filter-name>EncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+  	</filter-mapping>
+  
+  	<filter>
+  		<filter-name>sitemesh</filter-name>
+  		<filter-class>org.sitemesh.config.ConfigurableSiteMeshFilter</filter-class>
+  	</filter>
+  	<filter-mapping>
+		<filter-name>sitemesh</filter-name>
+		<url-pattern>/*</url-pattern>  
+ 	</filter-mapping>
+  
+  	<!-- druid的监控功能 -->
+  	<filter>
+	    <filter-name>DruidWebStatFilter</filter-name>
+	    <filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
+	    <!-- 过滤掉一下路径的监控 -->
+	    <init-param>
+	        <param-name>exclusions</param-name>
+	        <param-value>*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*,/ueditor/*</param-value>
+	    </init-param>
+	    <init-param>
+	        <param-name>sessionStatMaxCount</param-name>
+	        <param-value>1000</param-value>
+	    </init-param>
+	    <init-param>
+	        <param-name>sessionStatEnable</param-name>
+	        <param-value>true</param-value>
+	    </init-param>
+	     <init-param>
+	        <param-name>principalSessionName</param-name>
+	        <param-value>xxx.user</param-value>
+	    </init-param>
+ 	</filter>
+  
+  	<filter-mapping>
+    	<filter-name>DruidWebStatFilter</filter-name>
+    	<url-pattern>/*</url-pattern>
+ 	</filter-mapping>
+  
+	<servlet>
+      	<servlet-name>DruidStatView</servlet-name>
+      	<servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+      	<!-- 屏蔽掉页面上的重置监控数据功能 -->
+      	<init-param>
+      	  <param-name>resetEnable</param-name>
+      	  <param-value>false</param-value>
+      	</init-param>
+    	<!-- 用户名 ,密码--> 
+    	<!-- 
+      	<init-param>  
+		    <param-name>loginUsername</param-name>  
+		    <param-value>druid</param-value>  
+	    </init-param>  
+	    <init-param>  
+		    <param-name>loginPassword</param-name>  
+		    <param-value>druid</param-value>  
+	    </init-param>  
+    	 --> 
+     	<init-param>
+     		<!-- 允许访问的ip路径 -->
+      	  	<param-name>allow</param-name>
+       		<param-value>127.0.0.1</param-value>
+     	</init-param>
+     	<init-param>
+     		<!-- 禁止访问的ip路径，优先级高于allow -->
+        	<param-name>deny</param-name>
+        	<param-value></param-value>
+    	</init-param>
+  	</servlet>
+  	<servlet-mapping>
+      	<servlet-name>DruidStatView</servlet-name>
+      	<url-pattern>/druid/*</url-pattern>
+ 	</servlet-mapping>
+ 	
+ 	<!-- springMVC 前端控制器的配置 -->
+	<servlet>
+		<servlet-name>springMVCWeb</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>
+				classpath*:com/esteban/resource/springMVC/admin-servlet.xml,
+				classpath*:com/esteban/resource/springMVC/front-servlet.xml
+			</param-value>
+		</init-param>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>springMVCWeb</servlet-name>
+		<url-pattern>/hessian/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>springMVCWeb</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+  
+</web-app>

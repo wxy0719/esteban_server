@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.esteban.dao.WenkuDao">
+  <resultMap id="BaseResultMap" type="com.esteban.model.Wenku">
+    <result column="f_id" jdbcType="VARCHAR" property="id" />
+    <result column="f_title" jdbcType="VARCHAR" property="title" />
+    <result column="f_author" jdbcType="VARCHAR" property="author" />
+    <result column="f_fromUrl" jdbcType="VARCHAR" property="fromurl" />
+    <result column="f_status" jdbcType="VARCHAR" property="status" />
+    <result column="f_createUser" jdbcType="VARCHAR" property="createuser" />
+    <result column="f_createTime" jdbcType="VARCHAR" property="createtime" />
+    <result column="f_type" jdbcType="VARCHAR" property="type" />
+    <result column="f_isTop" jdbcType="VARCHAR" property="istop" />
+    <result column="f_docPath" jdbcType="VARCHAR" property="docpath" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    f_id, f_title, f_author, f_fromUrl, f_status, f_createUser, f_createTime, f_type, 
+    f_isTop, f_docPath
+  </sql>
+  <select id="selectByExample" parameterType="com.esteban.model.WenkuExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_wenku
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.esteban.model.WenkuExample">
+    delete from t_wenku
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.esteban.model.Wenku">
+    insert into t_wenku (f_id, f_title, f_author, 
+      f_fromUrl, f_status, f_createUser, 
+      f_createTime, f_type, f_isTop, 
+      f_docPath)
+    values (#{id,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{fromurl,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createuser,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{istop,jdbcType=VARCHAR}, 
+      #{docpath,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.esteban.model.Wenku">
+    insert into t_wenku
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        f_id,
+      </if>
+      <if test="title != null">
+        f_title,
+      </if>
+      <if test="author != null">
+        f_author,
+      </if>
+      <if test="fromurl != null">
+        f_fromUrl,
+      </if>
+      <if test="status != null">
+        f_status,
+      </if>
+      <if test="createuser != null">
+        f_createUser,
+      </if>
+      <if test="createtime != null">
+        f_createTime,
+      </if>
+      <if test="type != null">
+        f_type,
+      </if>
+      <if test="istop != null">
+        f_isTop,
+      </if>
+      <if test="docpath != null">
+        f_docPath,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="fromurl != null">
+        #{fromurl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createuser != null">
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="istop != null">
+        #{istop,jdbcType=VARCHAR},
+      </if>
+      <if test="docpath != null">
+        #{docpath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.esteban.model.WenkuExample" resultType="java.lang.Long">
+    select count(*) from t_wenku
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_wenku
+    <set>
+      <if test="record.id != null">
+        f_id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.title != null">
+        f_title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.author != null">
+        f_author = #{record.author,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fromurl != null">
+        f_fromUrl = #{record.fromurl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        f_status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createuser != null">
+        f_createUser = #{record.createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createtime != null">
+        f_createTime = #{record.createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        f_type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.istop != null">
+        f_isTop = #{record.istop,jdbcType=VARCHAR},
+      </if>
+      <if test="record.docpath != null">
+        f_docPath = #{record.docpath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_wenku
+    set f_id = #{record.id,jdbcType=VARCHAR},
+      f_title = #{record.title,jdbcType=VARCHAR},
+      f_author = #{record.author,jdbcType=VARCHAR},
+      f_fromUrl = #{record.fromurl,jdbcType=VARCHAR},
+      f_status = #{record.status,jdbcType=VARCHAR},
+      f_createUser = #{record.createuser,jdbcType=VARCHAR},
+      f_createTime = #{record.createtime,jdbcType=VARCHAR},
+      f_type = #{record.type,jdbcType=VARCHAR},
+      f_isTop = #{record.istop,jdbcType=VARCHAR},
+      f_docPath = #{record.docpath,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  <select id="listByPage" resultMap="BaseResultMap">
+	    select * from t_wenku t
+	    	where 1=1
+	    	<if test="t!=null">
+		    	<if test="t.author!=null and t.author!=''">
+		    	    and t.f_author like CONCAT('%','${t.author}','%' )
+		    	</if>
+		    	<if test="t.status!=null and t.status!=''">
+		    	    and t.f_status like CONCAT('%','${t.status}','%' )
+		    	</if>
+		    	<if test="t.type!=null and t.type!=''">
+		    	    and t.f_type like CONCAT('%','${t.type}','%' )
+		    	</if>
+		    order by t.f_isTop desc,t.f_createTime desc
+	    	</if>
+	</select>
+</mapper>

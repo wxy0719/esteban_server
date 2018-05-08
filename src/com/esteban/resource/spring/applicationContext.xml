@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:lang="http://www.springframework.org/schema/lang" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+				         http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+				         http://www.springframework.org/schema/lang
+				         http://www.springframework.org/schema/lang/spring-lang-4.3.xsd      
+				         http://www.springframework.org/schema/tx   
+				         http://www.springframework.org/schema/tx/spring-tx-4.3.xsd    
+				         http://www.springframework.org/schema/aop     
+				         http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+				         http://www.springframework.org/schema/context     
+				         http://www.springframework.org/schema/context/spring-context-4.3.xsd
+				         http://www.springframework.org/schema/cache
+				         http://www.springframework.org/schema/cache/spring-cache-4.3.xsd">
+	<context:component-scan base-package="com.esteban.**.controller.**" />
+	<context:component-scan base-package="com.esteban.**.service.**" />
+	<context:component-scan base-package="com.esteban.**.dao.**" />
+	
+	<!-- 配置spring事物管理器 -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+
+	<!-- oracle数据库配置
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@192.168.18.101:1521:ORCL" />
+		<property name="username" value="IMPAGENTHN" />
+		<property name="password" value="IMPAGENTHN" />
+		<property name="maxIdle" value="20" />
+		<property name="minIdle" value="5" />
+		<property name="initialSize" value="5" />
+		<property name="maxActive" value="20" />
+		<property name="maxWait" value="5000" />
+	</bean>
+	 -->
+	 
+	<!-- Mysql数据库配置 
+		<property name="url" value="jdbc:mysql://rdsnfvbyqm7rnuz.mysql.rds.aliyuncs.com/rmn503u7z8uq229u" />
+		<property name="username" value="rmn503u7z8uq229u" />
+		<property name="password" value="123456" />
+	 -->
+	 
+	<!-- JDBC 数据源 -->
+	<!-- 
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/esteban?useUnicode=true&amp;characterEncoding=utf-8" />
+		<property name="username" value="root" />
+		<property name="password" value="123456" />
+		<property name="maxIdle" value="20" />
+		<property name="minIdle" value="5" />
+		<property name="initialSize" value="5" />
+		<property name="maxActive" value="20" />
+		<property name="maxWait" value="5000" />
+	</bean>
+	-->
+	
+	<!-- druid 配置数据源 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/esteban?useUnicode=true&amp;characterEncoding=utf-8" />
+		<property name="username" value="root" />
+		<property name="password" value="123456" />
+		<property name="initialSize" value="5" />
+		<property name="maxActive" value="20" />
+		<property name="maxWait" value="5000" />
+		<property name="filters" value="stat,log4j" />
+		<!-- 配置慢sql的定义时间 -->
+		<property name="connectionProperties" value="druid.stat.slowSqlMillis=5000" />
+	</bean>
+	
+	<!-- druid 配置sql防火墙 -->
+	<bean id="wall-filter-config" class="com.alibaba.druid.wall.WallConfig" init-method="init">
+      	<!-- 指定配置装载的目录  -->
+      	<property name="dir" value="META-INF/druid/wall/mysql" />
+  	</bean>
+
+  	<bean id="wall-filter" class="com.alibaba.druid.wall.WallFilter">
+      	<property name="dbType" value="mysql" />
+      	<property name="config" ref="wall-filter-config" />
+  	</bean>
+	
+	<!-- druid spring 监视器设置 -->
+	<bean id="druid-stat-interceptor" class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor" />
+	<bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut" scope="prototype">
+		<property name="patterns">
+			<list>
+			<value>com.esteban.controller.*</value>
+			<value>com.esteban.service.*</value>
+			<value>com.esteban.dao.*</value>
+			</list>
+		</property>
+	</bean>
+	<aop:config proxy-target-class="true">
+		<aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut" />
+	</aop:config>
+	
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- mybatis 配置-->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:com/esteban/resource/mybatis/spring-mybatis.xml" />
+		<property name="mapperLocations" value="classpath:com/esteban/**/mapper/*.xml"></property>
+	</bean>
+
+	<!-- 自动扫描MAPPER -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.esteban.**.dao.**" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+	
+	<!-- 注解方式配置事物 -->
+    <!-- <tx:annotation-driven transaction-manager="transactionManager" /> -->
+
+    <!-- 拦截器方式配置事物 -->
+    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="add*" propagation="REQUIRED" />
+            <tx:method name="append*" propagation="REQUIRED" />
+            <tx:method name="insert*" propagation="REQUIRED" />
+            <tx:method name="save*" propagation="REQUIRED" />
+            <tx:method name="update*" propagation="REQUIRED" />
+            <tx:method name="modify*" propagation="REQUIRED" />
+            <tx:method name="edit*" propagation="REQUIRED" />
+            <tx:method name="delete*" propagation="REQUIRED" />
+            <tx:method name="remove*" propagation="REQUIRED" />
+            <tx:method name="repair" propagation="REQUIRED" />
+            <tx:method name="delAndRepair" propagation="REQUIRED" />
+
+            <tx:method name="get*" propagation="SUPPORTS" />
+            <tx:method name="find*" propagation="SUPPORTS" />
+            <tx:method name="load*" propagation="SUPPORTS" />
+            <tx:method name="search*" propagation="SUPPORTS" />
+            <tx:method name="datagrid*" propagation="SUPPORTS" />
+
+            <tx:method name="*" propagation="SUPPORTS" />
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut id="transactionPointcut" expression="execution(* com.esteban..*Impl.*(..))" />
+        <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" />
+    </aop:config>
+
+</beans>
