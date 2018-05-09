@@ -157,6 +157,32 @@ public abstract class DateOperator {
     }
 
     /**
+     * 获取当前时间
+     *
+     * @param format
+     * @return *
+     * @author tzk
+     */
+    public static String getNowDate(String format) {
+        if(format==null||"".equals(format)){
+            format=DATE_TIME_DISPLAY;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(new Date());
+    }
+
+    /**
+     * 获取当前时间
+     *
+     * @return *
+     * @author tzk
+     */
+    public static String getNowDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_TIME_DISPLAY);
+        return sdf.format(new Date());
+    }
+
+    /**
      * 将string转换为DATE
      *
      * @param date

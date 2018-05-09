@@ -220,36 +220,6 @@ public class TreeMenuController {
 	}
 
 	@Login(value=WebUtils.ADMIN_OPER)
-	@RequestMapping("/ifm/toEdit")
-	public String toEdit(HttpServletRequest request,Model model,String id){
-		MenuTreeExample mtEmp=new MenuTreeExample();
-		mtEmp.or().andIdEqualTo(id);
-		MenuTree tm=treeMenuLogic.detailFirst(mtEmp);
-
-		Page page=WebUtils.getPage(request);
-		page.setShowAll(true);
-		Rights r=new Rights();
-		r.setStatus("1");
-		List<Rights> listRights=rightsLogic.listByPage(r, page);
-		model.addAttribute("listRights",listRights);
-		model.addAttribute("tm",tm);
-		return "newsManagement/menu/edit_menu";
-	}
-
-	@Login(value=WebUtils.ADMIN_OPER)
-	@RequestMapping("/ifm/toAdd")
-	public String toAdd(HttpServletRequest request,Model model,String id){
-		Page page=WebUtils.getPage(request);
-		page.setShowAll(true);
-		Rights r=new Rights();
-		r.setStatus("1");
-		List<Rights> listRights=rightsLogic.listByPage(r, page);
-		model.addAttribute("listRights",listRights);
-		model.addAttribute("pid",id);
-		return "newsManagement/menu/add_menu";
-	}
-
-	@Login(value=WebUtils.ADMIN_OPER)
 	@ResponseBody
 	@RequestMapping("/ifm/add")
 	public void add(HttpServletRequest req,HttpServletResponse res,MenuTree tree,String pid){

@@ -1,41 +1,36 @@
 package com.esteban.core.system.controller;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-
-import javax.annotation.Resource;
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.esteban.core.framework.annotation.Login;
+import com.esteban.core.framework.annotation.NeedLog;
 import com.esteban.core.framework.utils.CookieUtils;
 import com.esteban.core.framework.utils.MD5;
 import com.esteban.core.framework.utils.WebUtils;
 import com.esteban.core.system.model.Oper;
 import com.esteban.core.system.model.OperExample;
 import com.esteban.core.system.service.IOperLogic;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * @author esteban
  * @since 2014年5月23日
  */
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("")
 public class LoginController {
 
     private static final Logger log = Logger
@@ -52,8 +47,8 @@ public class LoginController {
             put("codeErro", "验证码错误");
             put("isBlack", "抱歉,该用户被列为黑名单,不能进行登陆");
             put("infoErro", "用户名密码错误");
-            put("userNotPass", "该代理人信息暂未进行审核，请耐心等待");
-            put("userNotActive", "该代理人审核不通过或未激活,请重新申请或激活");
+            put("userNotPass", "该用户信息暂未进行审核，请耐心等待");
+            put("userNotActive", "该用户审核不通过或未激活,请重新申请或激活");
             put("userNotExist", "用户不存在");
         }
     };
@@ -61,24 +56,12 @@ public class LoginController {
     @Resource
     private IOperLogic operLogic;
 
-    @RequestMapping("")
-    public String toLogin(HttpServletRequest request,Model model){
-        Oper oper=WebUtils.getOper(request);
-        if(oper==null){
-            model.addAttribute("userId",CookieUtils.getCookie(request, "userId"));
-            model.addAttribute("passwd",CookieUtils.getCookie(request, "passwd"));
-            model.addAttribute("isRemberPass",CookieUtils.getCookie(request, "isRemberPass"));
-            model.addAttribute("keepTime",CookieUtils.getCookie(request, "keepTime"));
-            return "/newsManagement/login";
-        }
-        return "redirect:/newsManagement/index";
-    }
-
+    @ResponseBody
+    @NeedLog(operateContent = "用户登录")
     @RequestMapping("/login")
-    public String login(HttpServletRequest req, HttpServletResponse res,String userId,
-                        String[] isRemberPass,String keepTime,
-                        String passwd,String checkCode,Model model,RedirectAttributes ra,String message) {
-        String backUrl="/newsManagement/login";
+    public Map<String,Object> login(HttpServletRequest req, HttpServletResponse res, String userId,
+                     String passwd, String checkCode) {
+        Map<String,Object> result=new HashMap<>();
         String flag="";
         //数据验证
         if (StringUtils.isBlank(userId)) {
@@ -96,9 +79,10 @@ public class LoginController {
             }
         }
         if(!StringUtils.isBlank(flag)){
-            model.addAttribute("message", INFOMAP.get(flag));
-            model.addAttribute("userId", userId);
-            return backUrl;
+            result.put("message", INFOMAP.get(flag));
+            result.put("status","500");
+            result.put("userId", userId);
+            return result;
         }
 
         String validateString = md5.MD5Encode(passwd);
@@ -112,29 +96,12 @@ public class LoginController {
         if (oper != null) {
             flag=operLogic.login(oper,validateString,req,res);
         } else {
-            model.addAttribute("message", "userNotExist");
+            result.put("message", "userNotExist");
+            result.put("status","500");
             flag="userNotExist";
         }
 
-        if("redirectURL".equals(flag)){
-            String path = (String) req.getSession().getAttribute("RedirectPath");
-            req.getSession().removeAttribute("RedirectPath");
-            System.out.println("loginController-->path:" + path);
-            setCookie(res, req, userId, passwd, isRemberPass, keepTime);
-            return "redirect:"+path;
-        }else if("redirectIndex".equals(flag)){
-            setCookie(res, req, userId, passwd, isRemberPass, keepTime);
-            return "redirect:/newsManagement/index";
-        }else{
-            model.addAttribute("message", INFOMAP.get(flag));
-            return backUrl;
-        }
-    }
-
-    @Login(value=WebUtils.ADMIN_OPER)
-    @RequestMapping("/index")
-    public String toMainPage(){
-        return "/newsManagement/index";
+        return result;
     }
 
     public void setCookie(HttpServletResponse res,HttpServletRequest req,String userId,String passwd,String[] isRemberPass,String keepTime){
@@ -168,8 +135,8 @@ public class LoginController {
         Oper oper = WebUtils.getOper(request);
         request.getSession().invalidate(); // 设置session失效
         if (oper != null) {
-            log.info("代理人退出[" + oper.getName() + "]");
-            operLogic.saveLog(oper.getName(), "代理人退出[" + oper.getName() + "]", request.getRemoteAddr());
+            log.info("用户退出[" + oper.getName() + "]");
+            operLogic.saveLog(oper.getName(), "用户退出[" + oper.getName() + "]", request.getRemoteAddr());
         }
         return "redirect:/newsManagement";
     }

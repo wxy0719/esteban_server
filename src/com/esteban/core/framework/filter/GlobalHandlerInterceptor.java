@@ -1,8 +1,12 @@
 package com.esteban.core.framework.filter;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.esteban.core.framework.annotation.NeedLog;
+import com.esteban.core.framework.utils.DateOperator;
+import com.esteban.core.system.service.IOperLogic;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,13 +30,19 @@ import com.esteban.core.framework.exception.LoginException;
 public class GlobalHandlerInterceptor implements HandlerInterceptor {
     private static Log log = LogFactory.getLog(GlobalHandlerInterceptor.class);
 
+    @Resource
+    private IOperLogic operLogic;
+
+
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HandlerMethod hm = null;
         Login login = null;
+        NeedLog needLog = null;
         try {
             if (handler instanceof HandlerMethod) {
                 hm = (HandlerMethod) handler;
                 login = hm.getMethod().getAnnotation(Login.class);
+                needLog = hm.getMethod().getAnnotation(NeedLog.class);
             }
         } catch (Exception e) {
             e.getMessage();
@@ -44,6 +54,17 @@ public class GlobalHandlerInterceptor implements HandlerInterceptor {
                 Agent agent = WebUtils.getAgent(request.getSession());
                 if (null == agent || StringUtils.isBlank(agent.getMobile())) {
                     throw new LoginException("请登陆系统!");
+                }else{
+                    if(needLog != null){
+                        String operateContent="";
+                        if(!"".equals(needLog.operateContent())){
+                            operateContent=needLog.operateContent();
+                        }else{
+                            operateContent=path;
+                        }
+                        log.info(agent.getName()+","+ DateOperator.getNowDate()+",执行了【"+operateContent+"】");
+                        operLogic.saveLog(agent.getIdNum(),agent.getName()+","+ DateOperator.getNowDate()+",执行了【"+operateContent+"】",request.getRemoteAddr());
+                    }
                 }
             } else if (WebUtils.ADMIN_OPER.equals(login.value())) {
                 String path = request.getRequestURL().toString();
@@ -51,6 +72,17 @@ public class GlobalHandlerInterceptor implements HandlerInterceptor {
                 Oper oper = WebUtils.getOper(request.getSession());
                 if (null == oper || StringUtils.isBlank(oper.getName())) {
                     throw new AdminLoginException("请登陆系统！");
+                }else{
+                    if(needLog != null){
+                        String operateContent="";
+                        if(!"".equals(needLog.operateContent())){
+                            operateContent=needLog.operateContent();
+                        }else{
+                            operateContent=path;
+                        }
+                        log.info(oper.getName()+","+ DateOperator.getNowDate()+",执行了【"+operateContent+"】");
+                        operLogic.saveLog(oper.getId(),oper.getName()+","+ DateOperator.getNowDate()+",执行了【"+operateContent+"】",request.getRemoteAddr());
+                    }
                 }
             }
         }
