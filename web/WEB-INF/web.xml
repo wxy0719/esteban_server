@@ -30,7 +30,7 @@
   	<listener>
   		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   		<!-- 获取springBeanFactory （实用） -->
-  		<listener-class>com.esteban.framework.listener.InitListener</listener-class>
+  		<listener-class>com.esteban.core.framework.listener.InitListener</listener-class>
   	</listener>
   	
   	<!-- 定义LOG4J监听器 -->   
@@ -122,8 +122,8 @@
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>
-				classpath*:com/esteban/resource/springMVC/admin-servlet.xml,
-				classpath*:com/esteban/resource/springMVC/front-servlet.xml
+				classpath*:com/esteban/resource/springMVC/core-servlet.xml,
+				classpath*:com/esteban/resource/springMVC/business-servlet.xml
 			</param-value>
 		</init-param>
 	</servlet>

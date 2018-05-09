@@ -16,10 +16,7 @@
 				         http://www.springframework.org/schema/context/spring-context-4.3.xsd
 				         http://www.springframework.org/schema/cache
 				         http://www.springframework.org/schema/cache/spring-cache-4.3.xsd">
-	<context:component-scan base-package="com.esteban.**.controller.**" />
-	<context:component-scan base-package="com.esteban.**.service.**" />
-	<context:component-scan base-package="com.esteban.**.dao.**" />
-	
+
 	<!-- 配置spring事物管理器 -->
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 
@@ -88,9 +85,9 @@
 	<bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut" scope="prototype">
 		<property name="patterns">
 			<list>
-			<value>com.esteban.controller.*</value>
-			<value>com.esteban.service.*</value>
-			<value>com.esteban.dao.*</value>
+			<value>com.esteban.business.controller.*</value>
+			<value>com.esteban.business.service.*</value>
+			<value>com.esteban.business.dao.*</value>
 			</list>
 		</property>
 	</bean>
