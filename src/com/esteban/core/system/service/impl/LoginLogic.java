@@ -1,11 +1,13 @@
 package com.esteban.core.system.service.impl;
 
+import com.esteban.core.framework.utils.MD5;
+import com.esteban.core.framework.utils.StringUtil;
 import com.esteban.core.framework.utils.Utility;
 import com.esteban.core.framework.utils.WebUtils;
 import com.esteban.core.system.model.Oper;
 import com.esteban.core.system.model.OperExample;
 import com.esteban.core.system.service.ILoginLogic;
-import com.esteban.core.framework.utils.StringUtil;
+import com.esteban.core.system.service.IOperLogic;
 import net.sf.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +20,8 @@ import java.util.Map;
  * Created by CPR269 on 2018/5/9.
  */
 public class LoginLogic implements ILoginLogic{
+
+    private IOperLogic operLogic;
 
     @Override
     public Map<String, Object> login(HttpServletRequest request, HttpServletResponse response) {
@@ -53,13 +57,13 @@ public class LoginLogic implements ILoginLogic{
                 }
             }
             if(!StringUtil.isBlank(flag)){
-                result.put("message", INFOMAP.get(flag));
+                result.put("message", flag);
                 result.put("status","500");
                 result.put("userId", userId);
                 return result;
             }
 
-            String validateString = md5.MD5Encode(passwd);
+            String validateString = MD5.MD5Encode(passwd);
             OperExample operEmp=new OperExample();
             operEmp.or().andNameEqualTo(userId);
             List<Oper> list=operLogic.detail(operEmp);
