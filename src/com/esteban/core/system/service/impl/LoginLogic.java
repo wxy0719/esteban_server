@@ -44,24 +44,24 @@ public class LoginLogic implements ILoginLogic{
             String passwd = dataJson.getString("passwd");
             String checkCode = dataJson.getString("checkCode");
 
-            String flag="";
+            String message="";
             //数据验证
             if (StringUtil.isBlank(userId)) {
-                flag="nameNotNull";
+                message="登录名不能为空";
             }
             if (StringUtil.isBlank(passwd)) {
-                flag="passNotNull";
+                message="密码不能为空";
             }
             if("1".equals(WebUtils.getConfigValByName("isValidateCode"))){
                 if (StringUtil.isBlank(checkCode)) {
-                    flag="codeNotNull";
+                    message="验证码不能为空";
                 }
                 if (checkCode!=null&&!checkCode.equals((String)request.getSession(true).getAttribute("adminRand"))) {
-                    flag="codeErro";
+                    message="验证码错误";
                 }
             }
-            if(!StringUtil.isBlank(flag)){
-                result.put("message", flag);
+            if(!StringUtil.isBlank(message)){
+                result.put("message", message);
                 result.put("status","500");
                 result.put("userId", userId);
                 return result;
@@ -76,11 +76,10 @@ public class LoginLogic implements ILoginLogic{
                 oper=list.get(0);
             }
             if (oper != null) {
-                flag=operLogic.login(oper,validateString,request,response);
+                message=operLogic.login(oper,validateString,request,response);
             } else {
-                result.put("message", "userNotExist");
+                result.put("message", "用户不存在");
                 result.put("status","500");
-                flag="userNotExist";
             }
 
         }
