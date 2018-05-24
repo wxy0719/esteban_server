@@ -1,97 +1,25 @@
 package com.esteban.core.system.service.impl;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 import com.esteban.core.system.dao.RightsTypeDao;
-import com.esteban.core.framework.utils.Page;
+import com.esteban.core.system.dao.base.IDao;
 import com.esteban.core.system.model.RightsType;
 import com.esteban.core.system.model.RightsTypeExample;
 import com.esteban.core.system.service.IRightsTypeLogic;
+import com.esteban.core.system.service.base.impl.BaseServiceImpl;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 @Service
-public class RightsTypeLogic implements IRightsTypeLogic{
+public class RightsTypeLogic extends BaseServiceImpl<RightsType,RightsTypeExample> implements IRightsTypeLogic{
 	
 	@Resource 
 	private RightsTypeDao rightsTypeDao;
-	
-	
-	public List<RightsType> listByPage(RightsType t, Page page) {
-		return rightsTypeDao.listByPage(t, page);
-	}
 
-	
-	public List<RightsType> detail(RightsTypeExample emp) {
-		if(emp!=null){
-			return rightsTypeDao.selectByExample(emp);
-		}
-		return null;
-	}
-	
-	public RightsType detailFirst(RightsTypeExample emp){
-		RightsType rt=null;
-		List<RightsType> list=detail(emp);
-		if(list!=null&&list.size()>0){
-			rt=list.get(0);
-		}
-		return rt;
-	}
-	
-	
-	public RightsType detailFirstWithBlob(RightsTypeExample emp){
-		RightsType rt=null;
-		List<RightsType> list=detailWithBlob(emp);
-		if(list!=null&&list.size()>0){
-			rt=list.get(0);
-		}
-		return rt;
-	}
-	
-	public List<RightsType> detailWithBlob(RightsTypeExample emp) {
-		if(emp!=null){
-			return rightsTypeDao.selectByExampleWithBLOBs(emp);
-		}
-		return null;
-	}
 
-	
-	public boolean add(RightsType t) {
-		int result=0;
-		if(t!=null){
-			result=rightsTypeDao.insert(t);
-		}
-		return result>0;
+	@Override
+	public IDao getDao() {
+		return rightsTypeDao;
 	}
-
-	
-	public boolean modifyAll(RightsType t,RightsTypeExample emp) {
-		int result=0;
-		if(t!=null){
-			result=rightsTypeDao.updateByExample(t, emp);
-		}
-		return result>0;
-	}
-	
-	
-	public boolean modify(RightsType t,RightsTypeExample emp) {
-		int result=0;
-		if(t!=null){
-			result=rightsTypeDao.updateByExampleSelective(t, emp);
-		}
-		return result>0;
-	}
-
-	
-	public boolean delete(RightsTypeExample emp) {
-		int result=0;
-		if(emp!=null){
-			result=rightsTypeDao.deleteByExample(emp);
-		}
-		return result>0;
-	}
-
 
 }

@@ -1,40 +1,34 @@
 package com.esteban.core.system.service.impl;
 
-import java.util.Date;
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.esteban.core.framework.utils.DateOperator;
+import com.esteban.core.framework.utils.IPUtils;
+import com.esteban.core.framework.utils.UUID;
+import com.esteban.core.framework.utils.WebUtils;
+import com.esteban.core.system.dao.AdviceUserDao;
+import com.esteban.core.system.dao.OperDao;
+import com.esteban.core.system.dao.UserLogDao;
+import com.esteban.core.system.dao.base.IDao;
+import com.esteban.core.system.model.*;
+import com.esteban.core.system.service.IOperLogic;
+import com.esteban.core.system.service.IRoleLogic;
+import com.esteban.core.system.service.base.impl.BaseServiceImpl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import com.esteban.core.system.dao.AdviceUserDao;
-import com.esteban.core.system.dao.OperDao;
-import com.esteban.core.system.dao.UserLogDao;
-import com.esteban.core.framework.utils.DateOperator;
-import com.esteban.core.framework.utils.IPUtils;
-import com.esteban.core.framework.utils.Page;
-import com.esteban.core.framework.utils.UUID;
-import com.esteban.core.framework.utils.WebUtils;
-import com.esteban.core.system.model.AdviceUser;
-import com.esteban.core.system.model.Oper;
-import com.esteban.core.system.model.OperExample;
-import com.esteban.core.system.model.Role;
-import com.esteban.core.system.model.RoleExample;
-import com.esteban.core.system.model.UserLog;
-import com.esteban.core.system.service.IOperLogic;
-import com.esteban.core.system.service.IRoleLogic;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+import java.util.List;
 
 @Service
-public class OperLogic implements IOperLogic {
+public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOperLogic {
 	private static final Logger log = Logger.getLogger(OperLogic.class);
 
 	@Resource
 	private OperDao operDao;
-	
+
 	@Resource
 	private UserLogDao userLogDao;
 	
@@ -43,84 +37,13 @@ public class OperLogic implements IOperLogic {
 	
 	@Resource
 	private AdviceUserDao adviceUserDao;
-	
-	
-	public List<Oper> listByPage(Oper t, Page page) {
-		return operDao.listByPage(t, page);
+
+	@Override
+	public IDao getDao() {
+		return operDao;
 	}
 
-	
-	public List<Oper> detail(OperExample emp) {
-		if(emp!=null){
-			return operDao.selectByExample(emp);
-		}
-		return null;
-	}
-	
-	
-	public List<Oper> detailWithBlob(OperExample emp) {
-		if(emp!=null){
-			return operDao.selectByExampleWithBLOBs(emp);
-		}
-		return null;
-	}
-	
-	public Oper detailFirst(OperExample emp){
-		Oper op=null;
-		List<Oper> listOper=detail(emp);
-		if(listOper!=null&&listOper.size()>0){
-			op=listOper.get(0);
-		}
-		return op;
-	}
-	
-	
-	public Oper detailFirstWithBlob(OperExample emp){
-		Oper op=null;
-		List<Oper> listOper=detailWithBlob(emp);
-		if(listOper!=null&&listOper.size()>0){
-			op=listOper.get(0);
-		}
-		return op;
-	}
-
-	
-	public boolean add(Oper t) {
-		int result=0;
-		if(t!=null){
-			result=operDao.insert(t);
-		}
-		return result>0;
-	}
-
-	
-	public boolean modifyAll(Oper t,OperExample emp) {
-		int result=0;
-		if(t!=null){
-			result=operDao.updateByExample(t,emp);
-		}
-		return result>0;
-	}
-	
-	public boolean modify(Oper t,OperExample emp) {
-		int result=0;
-		if(t!=null){
-			result=operDao.updateByExampleSelective(t,emp);
-		}
-		return result>0;
-	}
-
-	
-	public boolean delete(OperExample emp) {
-		int result=0;
-		if(emp!=null){
-			result=operDao.deleteByExample(emp);
-		}
-		return result>0;
-	}
-	
-	
-    public boolean saveLog(String operUser, String info, String remoteAddr) {
+	public boolean saveLog(String operUser, String info, String remoteAddr) {
         int result=0;
         if(!StringUtils.isBlank(operUser)){
         	String logid=UUID.getUUID().toString(); 
@@ -231,5 +154,5 @@ public class OperLogic implements IOperLogic {
 		operRightString=operRightString.substring(0, operRightString.length()-1);
 		return operRightString;
 	}
-	
+
 }

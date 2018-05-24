@@ -29,9 +29,12 @@
   	<!-- spring 监听器配置 -->
   	<listener>
   		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  		<!-- 获取springBeanFactory （实用） -->
-  		<listener-class>com.esteban.core.framework.listener.InitListener</listener-class>
   	</listener>
+
+	<!-- 获取springBeanFactory （实用） -->
+	<listener>
+		<listener-class>com.esteban.core.framework.listener.InitListener</listener-class>
+	</listener>
   	
   	<!-- 定义LOG4J监听器 -->   
 	<listener>   

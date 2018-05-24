@@ -8,8 +8,10 @@ import com.esteban.core.system.model.Oper;
 import com.esteban.core.system.model.OperExample;
 import com.esteban.core.system.service.ILoginLogic;
 import com.esteban.core.system.service.IOperLogic;
-import net.sf.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -19,17 +21,19 @@ import java.util.Map;
 /**
  * Created by CPR269 on 2018/5/9.
  */
+@Service("loginLogic")
 public class LoginLogic implements ILoginLogic{
 
+    @Resource
     private IOperLogic operLogic;
 
     @Override
-    public Map<String, Object> login(HttpServletRequest request, HttpServletResponse response) {
+    public Object login(HttpServletRequest request, HttpServletResponse response) {
         Map<String,Object> result=new HashMap<>();
 
         String dataStr = request.getParameter("data");
         if(Utility.isNotEmpty(dataStr)) {
-            JSONObject dataJson = JSONObject.fromObject(dataStr);
+            JSONObject dataJson = JSONObject.parseObject(dataStr);
             if (!Utility.validRequestPara(new String[]{"entityCode", "uid"}, dataJson)) {
                 result.put("code", "500");
                 result.put("msg", "data中缺少必要参数");
@@ -63,7 +67,7 @@ public class LoginLogic implements ILoginLogic{
                 return result;
             }
 
-            String validateString = MD5.MD5Encode(passwd);
+            String validateString = MD5.stringMD5(passwd);
             OperExample operEmp=new OperExample();
             operEmp.or().andNameEqualTo(userId);
             List<Oper> list=operLogic.detail(operEmp);

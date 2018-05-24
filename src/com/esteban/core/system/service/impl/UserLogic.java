@@ -1,115 +1,43 @@
 package com.esteban.core.system.service.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import com.esteban.core.framework.utils.MD5;
+import com.esteban.core.framework.utils.UUID;
+import com.esteban.core.framework.utils.WebUtils;
+import com.esteban.core.system.dao.UserDao;
+import com.esteban.core.system.dao.base.IDao;
+import com.esteban.core.system.model.User;
+import com.esteban.core.system.model.UserExample;
+import com.esteban.core.system.service.IConfigLogic;
+import com.esteban.core.system.service.IUserLogic;
+import com.esteban.core.system.service.base.impl.BaseServiceImpl;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import com.esteban.core.system.dao.UserDao;
-import com.esteban.core.framework.utils.MD5;
-import com.esteban.core.framework.utils.Page;
-import com.esteban.core.framework.utils.UUID;
-import com.esteban.core.framework.utils.WebUtils;
-import com.esteban.core.system.model.User;
-import com.esteban.core.system.model.UserExample;
-import com.esteban.core.system.service.IConfigLogic;
-import com.esteban.core.system.service.IUserLogic;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
-public class UserLogic implements IUserLogic {
+public class UserLogic extends BaseServiceImpl<User,UserExample> implements IUserLogic {
 
 	@Resource
 	private UserDao userDao;
 	
 	@Resource
 	private IConfigLogic configLogic;
-	
-	
-	public List<User> listByPage(User t, Page page) {
-		return userDao.listByPage(t, page);
+
+
+	@Override
+	public IDao getDao() {
+		return userDao;
 	}
 
-	
-	public List<User> detail(UserExample emp) {
-		if(emp!=null){
-			return userDao.selectByExample(emp);
-		}
-		return null;
-	}
-	
-	
-	public List<User> detailWithBlob(UserExample emp) {
-		if(emp!=null){
-			return userDao.selectByExampleWithBLOBs(emp);
-		}
-		return null;
-	}
-	
-	public User detailFirst(UserExample emp){
-		User u=null;
-		List<User> list_=detail(emp);
-		if(list_!=null&&list_.size()>0){
-			u=list_.get(0);
-		}
-		return u;
-	}
-	
-	
-	public User detailFirstWithBlob(UserExample emp){
-		User u=null;
-		List<User> list_=detailWithBlob(emp);
-		if(list_!=null&&list_.size()>0){
-			u=list_.get(0);
-		}
-		return u;
-	}
-
-	
-	public boolean add(User t) {
-		int result=0;
-		if(t!=null){
-			result=userDao.insert(t);
-		}
-		return result>0;
-	}
-
-	
-	public boolean modifyAll(User t,UserExample emp) {
-		int result=0;
-		if(t!=null){
-			result=userDao.updateByExample(t, emp);
-		}
-		return result>0;
-	}
-	
-	
-	public boolean modify(User t,UserExample emp) {
-		int result=0;
-		if(t!=null){
-			result=userDao.updateByExampleSelective(t, emp);
-		}
-		return result>0;
-	}
-
-	
-	public boolean delete(UserExample emp) {
-		int result=0;
-		if(emp!=null){
-			result=userDao.deleteByExample(emp);
-		}
-		return result>0;
-	}
-
-	
 	public String addUser(HttpServletRequest req,User user) {
 		String info="添加成功";
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) req;
@@ -143,7 +71,7 @@ public class UserLogic implements IUserLogic {
         }
 		
 		user.setId(id);
-		user.setPasswd(MD5.MD5Encode("123456"));
+		user.setPasswd(MD5.stringMD5("123456"));
 		
 		boolean flag=add(user);
 		if(!flag&&"添加成功".equals(info)){

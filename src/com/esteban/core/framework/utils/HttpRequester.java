@@ -1,19 +1,17 @@
 package com.esteban.core.framework.utils;
 
+import net.sf.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
-/**
- * HTTP锟斤拷锟斤拷锟斤拷锟?
- * @author
- */
 public class HttpRequester {
 	private String defaultContentEncoding;
 
@@ -21,90 +19,30 @@ public class HttpRequester {
 		this.defaultContentEncoding = Charset.defaultCharset().name();
 	}
 
-	/**
-	 * 锟斤拷锟斤拷GET锟斤拷锟斤拷
-	 * @param urlString
-	 *            URL锟斤拷址
-	 * @return 锟斤拷应锟斤拷锟斤拷
-	 * @throws IOException
-	 */
 	public HttpResponser sendGet(String urlString) throws IOException {
 		return this.send(urlString, "GET", null, null);
 	}
 
-	/**
-	 * 锟斤拷锟斤拷GET锟斤拷锟斤拷
-	 * @param urlString
-	 *            URL锟斤拷址
-	 * @param params
-	 *            锟斤拷锟斤拷锟?
-	 * @return 锟斤拷应锟斤拷锟斤拷
-	 * @throws IOException
-	 */
 	public HttpResponser sendGet(String urlString, Map<String, String> params) throws IOException {
 		return this.send(urlString, "GET", params, null);
 	}
 
-	/**
-	 * 锟斤拷锟斤拷GET锟斤拷锟斤拷
-	 * @param urlString
-	 *            URL锟斤拷址
-	 * @param params
-	 *            锟斤拷锟斤拷锟?
-	 * @param propertys
-	 *            锟斤拷锟斤拷锟斤拷锟斤拷
-	 * @return 锟斤拷应锟斤拷锟斤拷
-	 * @throws IOException
-	 */
 	public HttpResponser sendGet(String urlString, Map<String, String> params, Map<String, String> propertys) throws IOException {
 		return this.send(urlString, "GET", params, propertys);
 	}
 
-	/**
-	 * 锟斤拷锟斤拷POST锟斤拷锟斤拷
-	 * @param urlString
-	 *            URL锟斤拷址
-	 * @return 锟斤拷应锟斤拷锟斤拷
-	 * @throws IOException
-	 */
 	public HttpResponser sendPost(String urlString) throws IOException {
 		return this.send(urlString, "POST", null, null);
 	}
 
-	/**
-	 * 锟斤拷锟斤拷POST锟斤拷锟斤拷
-	 * @param urlString
-	 *            URL锟斤拷址
-	 * @param params
-	 *            锟斤拷锟斤拷锟?
-	 * @return 锟斤拷应锟斤拷锟斤拷
-	 * @throws IOException
-	 */
 	public HttpResponser sendPost(String urlString, Map<String, String> params) throws IOException {
 		return this.send(urlString, "POST", params, null);
 	}
 
-	/**
-	 * 锟斤拷锟斤拷POST锟斤拷锟斤拷
-	 * @param urlString
-	 *            URL锟斤拷址
-	 * @param params
-	 *            锟斤拷锟斤拷锟?
-	 * @param propertys
-	 *            锟斤拷锟斤拷锟斤拷锟斤拷
-	 * @return 锟斤拷应锟斤拷锟斤拷
-	 * @throws IOException
-	 */
 	public HttpResponser sendPost(String urlString, Map<String, String> params, Map<String, String> propertys) throws IOException {
 		return this.send(urlString, "POST", params, propertys);
 	}
 
-	/**
-	 * 锟斤拷锟斤拷HTTP锟斤拷锟斤拷
-	 * @param urlString
-	 * @return 锟斤拷映锟斤拷锟斤拷
-	 * @throws IOException
-	 */
 	private HttpResponser send(String urlString, String method, Map<String, String> parameters, Map<String, String> propertys) throws IOException {
 		HttpURLConnection urlConnection = null;
 
@@ -154,12 +92,6 @@ public class HttpRequester {
 		return this.makeContent(urlString, urlConnection);
 	}
 
-	/**
-	 * 锟矫碉拷锟斤拷应锟斤拷锟斤拷
-	 * @param urlConnection
-	 * @return 锟斤拷应锟斤拷锟斤拷
-	 * @throws IOException
-	 */
 	private HttpResponser makeContent(String urlString, HttpURLConnection urlConnection) throws IOException {
 		HttpResponser HttpResponserer = new HttpResponser();
 		try {
@@ -209,18 +141,24 @@ public class HttpRequester {
 		}
 	}
 
-	/**
-	 * 默锟较碉拷锟斤拷应锟街凤拷
-	 */
 	public String getDefaultContentEncoding() {
 		return this.defaultContentEncoding;
 	}
 
-	/**
-	 * 锟斤拷锟斤拷默锟较碉拷锟斤拷应锟街凤拷
-	 */
 	public void setDefaultContentEncoding(String defaultContentEncoding) {
 		this.defaultContentEncoding = defaultContentEncoding;
+	}
+
+	public static JSONObject postForm(String url,Map<String, String> params, boolean needResponse){
+		System.out.println("*********");
+		JSONObject jsonResult = null;
+		try {
+			HttpResponser response = new HttpRequester().sendPost(url, null, params);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResult;
 	}
 
 	public static void main(String[] args) throws Exception {

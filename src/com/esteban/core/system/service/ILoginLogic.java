@@ -9,6 +9,6 @@ import java.util.Map;
  */
 public interface ILoginLogic {
 
-    public Map<String,Object> login(HttpServletRequest request, HttpServletResponse response);
+    public Object login(HttpServletRequest request, HttpServletResponse response);
 
 }
