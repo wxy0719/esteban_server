@@ -24,10 +24,7 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class HttpClientUtil {
 	private static Log LOG = LogFactory.getLog(HttpClientUtil.class);
@@ -214,6 +211,28 @@ public class HttpClientUtil {
 			LOG.error("post 请求提交失败：" + url);
 		}
 		return jsonResult;
+	}
+
+	public static void main(String[] args) {
+		String millis=String.valueOf(System.currentTimeMillis()/1000)+ Utility.getRandomNum(8);
+		//MD5加密
+		JSONObject data = new JSONObject();
+
+		//插入data   100068
+		data.put("userId", "admin");
+		data.put("passwd", "123456");
+
+		String ticket = MD5.stringMD5(millis+data.toJSONString());
+
+		Map<String,String> params = new HashMap<>();
+		params.put("adapterNo", "10001");
+		params.put("ticket", ticket);
+		params.put("data", data.toJSONString());
+		params.put("time", millis);
+		params.put("token", "token");
+
+		JSONObject obj = HttpClientUtil.postForm("http://localhost:8080/esteban_server/interfaceAdapter", params, true);
+		System.out.println(obj);
 	}
 	
 }

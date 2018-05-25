@@ -145,6 +145,13 @@
 	</dependency>
 
 	<dependency>
+	  <groupId>net.sf.json-lib</groupId>
+	  <artifactId>json-lib</artifactId>
+	  <version>2.4</version>
+	  <classifier>jdk15</classifier>
+	</dependency>
+
+	<dependency>
 	    <groupId>org.fusesource</groupId>
 	    <artifactId>sigar</artifactId>
 	    <version>1.6.4</version>
@@ -155,13 +162,7 @@
 	    <artifactId>dom4j</artifactId>
 	    <version>1.6.1</version>
 	</dependency>
-	
-	<dependency>
-	    <groupId>net.sf.json-lib</groupId>
-	    <artifactId>json-lib</artifactId>
-	    <version>2.4</version>
-	</dependency>
-	
+
 	<dependency>
 	    <groupId>commons-fileupload</groupId>
 	    <artifactId>commons-fileupload</artifactId>
@@ -198,13 +199,13 @@
 	    <version>5.1.41</version>
 	</dependency>
 
-	<dependency>
+  <dependency>
 	  <groupId>javax.servlet.jsp.jstl</groupId>
-	  <artifactId>jstl</artifactId>
-	  <version>1.2</version>
-	</dependency>
+	  <artifactId>javax.servlet.jsp.jstl-api</artifactId>
+	  <version>1.2.1</version>
+  </dependency>
 
-	<dependency>
+  <dependency>
 	  <groupId>org.apache.httpcomponents</groupId>
 	  <artifactId>httpclient</artifactId>
 	  <version>4.5.5</version>

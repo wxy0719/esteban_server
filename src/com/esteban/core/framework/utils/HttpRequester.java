@@ -1,6 +1,7 @@
 package com.esteban.core.framework.utils;
 
-import net.sf.json.JSONObject;
+
+import com.alibaba.fastjson.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,9 +9,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.Map;
+import java.util.Vector;
 
 public class HttpRequester {
 	private String defaultContentEncoding;
@@ -149,7 +150,7 @@ public class HttpRequester {
 		this.defaultContentEncoding = defaultContentEncoding;
 	}
 
-	public static JSONObject postForm(String url,Map<String, String> params, boolean needResponse){
+	public static JSONObject postForm(String url, Map<String, String> params, boolean needResponse){
 		System.out.println("*********");
 		JSONObject jsonResult = null;
 		try {
