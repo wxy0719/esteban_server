@@ -33,6 +33,8 @@ public class IPUtils {
             if(content.indexOf("province") == -1 || content.indexOf("city") == -1) {
                 return ret;
             }
+            String countryName = content.replaceAll(".*\"country\":\"(.*?)\".*", "$1").trim();
+            countryName = EncoderUtils.decodeUnicode(countryName);    //unicode编码
             String provName = content.replaceAll(".*\"province\":\"(.*?)\".*", "$1").trim();
             provName = EncoderUtils.decodeUnicode(provName);    //unicode编码
             String areaName = content.replaceAll(".*\"city\":\"(.*?)\".*", "$1").trim();
