@@ -14,11 +14,11 @@ import javax.annotation.Resource;
 public class OperateLogLogic extends BaseServiceImpl<OperateLog,OperateLogExample> implements IOperateLogLogic {
 	
 	@Resource
-	private OperateLogDao userLogDao;
+	private OperateLogDao operateLogDao;
 
 	@Override
 	public IDao getDao() {
-		return userLogDao;
+		return operateLogDao;
 	}
 
 }

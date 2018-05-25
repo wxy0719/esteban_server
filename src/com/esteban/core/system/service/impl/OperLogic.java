@@ -50,22 +50,24 @@ public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOpe
 		String status = "400";
 		String message = "";
 		String token = "";
+
 		if ("1001".equals(oper.getStatus())) {
-			if (oper.getPasswd().equals(validateString)) {
+			if (oper.getPasswd().equalsIgnoreCase(validateString)) {
+				//生成token
+				token = TokenUtils.getToken(oper.getId(),deviceCode);
 
 				// 增加登录日志
 				log.info("用户[" + oper.getName() + "]: " + DateOperator.format(new Date(), "yyyy-MM-dd HH:mm:ss") + "登陆,Ip:[" + req.getRemoteAddr() + "] ");
 				saveLog(oper.getName(), "登录成功[" + oper.getName() + "]", req.getRemoteAddr());
 
 				//修改登录记录
-				String loginTime = DateOperator.format(new Date(), "yyyyMMddHHmmss");
+				String loginTime = DateOperator.getNowDate();
 				String[] loginAddr = IPUtils.getAreaAndAreaSubByIPInSina(req.getRemoteAddr());
-				updateUserLoginInfo(oper.getId(), req.getRemoteAddr(), "WEB", loginTime, loginAddr[0], loginAddr[1]);
+				updateUserLoginInfo(oper.getId(), req.getRemoteAddr(), "WEB", loginTime, loginAddr[0], loginAddr[1], token);
 
 				//登录验证完成
-				token = TokenUtils.getToken(oper.getId(),deviceCode);
-
 				status = "200";
+				message = "登录成功";
 			} else {
 				message = "用户名密码验证不通过";
 			}
@@ -85,15 +87,16 @@ public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOpe
 		if(!StringUtils.isBlank(operUser)){
 			String logid=UUID.getUUID().toString();
 			OperateLog operateLog=new OperateLog();
-			operateLog.setUserlogid(logid);
+			operateLog.setLogid(logid);
 			operateLog.setContent(info);
 			operateLog.setUserid(operUser);
 			operateLog.setIpaddr(remoteAddr);
+			operateLog.setTime(DateOperator.getNowDate());
 			operateLogLogic.insert(operateLog);
 		}
 	}
 
-	public void updateUserLoginInfo(String userid, String remoteAddr, String type, String loginTime, String provName, String areaName) {
+	public void updateUserLoginInfo(String userid, String remoteAddr, String type, String loginTime, String provName, String areaName, String token) {
 		//判断是否有该用户的登录记录
 		LoginLogExample loginExm=new LoginLogExample();
 		loginExm.createCriteria().andUseridEqualTo(userid);
@@ -110,16 +113,20 @@ public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOpe
 			loginLog.setTime(loginTime);
 			loginLog.setType(type);
 			loginLog.setUserid(userid);
+			loginLog.setToken(token);
 			loginLogLogic.insert(loginLog);
 		}else{
 			//如果已有记录，则更新这条记录的对应信息
+			l.setAreaname(areaName);
+			l.setIpadr(remoteAddr);
+			l.setProvname(provName);
+			l.setTime(loginTime);
+			l.setType(type);
+			l.setToken(token);
 			loginExm.clear();
-			loginExm.createCriteria().andAreanameEqualTo(areaName).andIpadrEqualTo(remoteAddr).andProvnameEqualTo(provName)
-					.andTimeEqualTo(loginTime).andTypeEqualTo(type);
+			loginExm.createCriteria().andIdEqualTo(l.getId()).andUseridEqualTo(userid);
 			loginLogLogic.update(l,loginExm);
 		}
-
-
 	}
 	
 	public List<String> getOperRights(Oper oper) {

@@ -104,73 +104,73 @@ public class OperateLogExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        public Criteria andUserlogidIsNull() {
-            addCriterion("f_USERLOGID is null");
+        public Criteria andLogidIsNull() {
+            addCriterion("f_LOGID is null");
             return (Criteria) this;
         }
 
-        public Criteria andUserlogidIsNotNull() {
-            addCriterion("f_USERLOGID is not null");
+        public Criteria andLogidIsNotNull() {
+            addCriterion("f_LOGID is not null");
             return (Criteria) this;
         }
 
-        public Criteria andUserlogidEqualTo(String value) {
-            addCriterion("f_USERLOGID =", value, "userlogid");
+        public Criteria andLogidEqualTo(String value) {
+            addCriterion("f_LOGID =", value, "logid");
             return (Criteria) this;
         }
 
-        public Criteria andUserlogidNotEqualTo(String value) {
-            addCriterion("f_USERLOGID <>", value, "userlogid");
+        public Criteria andLogidNotEqualTo(String value) {
+            addCriterion("f_LOGID <>", value, "logid");
             return (Criteria) this;
         }
 
-        public Criteria andUserlogidGreaterThan(String value) {
-            addCriterion("f_USERLOGID >", value, "userlogid");
+        public Criteria andLogidGreaterThan(String value) {
+            addCriterion("f_LOGID >", value, "logid");
             return (Criteria) this;
         }
 
-        public Criteria andUserlogidGreaterThanOrEqualTo(String value) {
-            addCriterion("f_USERLOGID >=", value, "userlogid");
+        public Criteria andLogidGreaterThanOrEqualTo(String value) {
+            addCriterion("f_LOGID >=", value, "logid");
             return (Criteria) this;
         }
 
-        public Criteria andUserlogidLessThan(String value) {
-            addCriterion("f_USERLOGID <", value, "userlogid");
+        public Criteria andLogidLessThan(String value) {
+            addCriterion("f_LOGID <", value, "logid");
             return (Criteria) this;
         }
 
-        public Criteria andUserlogidLessThanOrEqualTo(String value) {
-            addCriterion("f_USERLOGID <=", value, "userlogid");
+        public Criteria andLogidLessThanOrEqualTo(String value) {
+            addCriterion("f_LOGID <=", value, "logid");
             return (Criteria) this;
         }
 
-        public Criteria andUserlogidLike(String value) {
-            addCriterion("f_USERLOGID like", value, "userlogid");
+        public Criteria andLogidLike(String value) {
+            addCriterion("f_LOGID like", value, "logid");
             return (Criteria) this;
         }
 
-        public Criteria andUserlogidNotLike(String value) {
-            addCriterion("f_USERLOGID not like", value, "userlogid");
+        public Criteria andLogidNotLike(String value) {
+            addCriterion("f_LOGID not like", value, "logid");
             return (Criteria) this;
         }
 
-        public Criteria andUserlogidIn(List<String> values) {
-            addCriterion("f_USERLOGID in", values, "userlogid");
+        public Criteria andLogidIn(List<String> values) {
+            addCriterion("f_LOGID in", values, "logid");
             return (Criteria) this;
         }
 
-        public Criteria andUserlogidNotIn(List<String> values) {
-            addCriterion("f_USERLOGID not in", values, "userlogid");
+        public Criteria andLogidNotIn(List<String> values) {
+            addCriterion("f_LOGID not in", values, "logid");
             return (Criteria) this;
         }
 
-        public Criteria andUserlogidBetween(String value1, String value2) {
-            addCriterion("f_USERLOGID between", value1, value2, "userlogid");
+        public Criteria andLogidBetween(String value1, String value2) {
+            addCriterion("f_LOGID between", value1, value2, "logid");
             return (Criteria) this;
         }
 
-        public Criteria andUserlogidNotBetween(String value1, String value2) {
-            addCriterion("f_USERLOGID not between", value1, value2, "userlogid");
+        public Criteria andLogidNotBetween(String value1, String value2) {
+            addCriterion("f_LOGID not between", value1, value2, "logid");
             return (Criteria) this;
         }
 

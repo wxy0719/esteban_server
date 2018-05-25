@@ -1,7 +1,7 @@
 package com.esteban.core.system.model;
 
 public class OperateLog {
-    private String userlogid;
+    private String logid;
 
     private String content;
 
@@ -11,12 +11,12 @@ public class OperateLog {
 
     private String time;
 
-    public String getUserlogid() {
-        return userlogid;
+    public String getLogid() {
+        return logid;
     }
 
-    public void setUserlogid(String userlogid) {
-        this.userlogid = userlogid == null ? null : userlogid.trim();
+    public void setLogid(String logid) {
+        this.logid = logid == null ? null : logid.trim();
     }
 
     public String getContent() {

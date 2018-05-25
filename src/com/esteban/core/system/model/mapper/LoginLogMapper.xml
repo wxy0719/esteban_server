@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.esteban.core.system.model.mapper.LoginLogMapper">
+<mapper namespace="com.esteban.core.system.dao.LoginLogDao">
   <resultMap id="BaseResultMap" type="com.esteban.core.system.model.LoginLog">
     <result column="f_ID" jdbcType="VARCHAR" property="id" />
     <result column="f_USERID" jdbcType="VARCHAR" property="userid" />

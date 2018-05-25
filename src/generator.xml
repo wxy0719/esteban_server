@@ -30,12 +30,10 @@ java -jar mybatis-generator-core-1.3.5.jar -configfile generator.xml -overwrite
             <property name="enableSubPackages" value="true" />
         </sqlMapGenerator>
         <!-- 生成DAO的包名和位置，这里配置将生成的dao类放在com.esteban.dao这个包下 -->
-        <!--
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.esteban.core.system.dao" targetProject="D:\cpr269\Documents\GitHub\esteban_server\src">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
-        -->
-        
+
         <!-- 要生成那些表(更改tableName和domainObjectName就可以)
         <table tableName="t_user" domainObjectName="User" enableCountByExample="true" enableDeleteByPrimaryKey="true" enableInsert="true" enableSelectByExample="true" enableSelectByPrimaryKey="true" enableUpdateByExample="true" enableDeleteByExample="true">
         	<columnRenamingRule searchString="^f_" replaceString="" />
@@ -80,7 +78,7 @@ java -jar mybatis-generator-core-1.3.5.jar -configfile generator.xml -overwrite
         	<columnRenamingRule searchString="^f_" replaceString="" />
         </table>
         -->
-        <table tableName="t_operate_log" domainObjectName="OperateLog" enableCountByExample="true" enableDeleteByPrimaryKey="true" enableInsert="true" enableSelectByExample="true" enableSelectByPrimaryKey="true" enableUpdateByExample="true" enableDeleteByExample="true">
+        <table tableName="t_login_log" domainObjectName="LoginLog" enableCountByExample="true" enableDeleteByPrimaryKey="true" enableInsert="true" enableSelectByExample="true" enableSelectByPrimaryKey="true" enableUpdateByExample="true" enableDeleteByExample="true">
             <columnRenamingRule searchString="^f_" replaceString="" />
         </table>
     </context>
