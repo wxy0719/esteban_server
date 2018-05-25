@@ -70,11 +70,6 @@ public class InterfaceAdapterController {
             result.put("message","校验码不能为空！");
             return result;
         }
-        if(Utility.isEmpty(token)){
-            result.put("code","401");
-            result.put("message","token不能为空！");
-            return result;
-        }
 
         //检验参数是否被篡改
         if(checkDataIsValid(time,data,ticket)){
@@ -147,19 +142,8 @@ public class InterfaceAdapterController {
         JSONObject data = new JSONObject();
 
         //插入data   100068
-        data.put("entityCode","HD340400");
-        data.put("uid","Admin");
-        data.put("id", "");
-        data.put("brandName", "BMW");
-        data.put("seriesName", "BMW2017");
-        data.put("plateNumber", "浙Q78647");
-        data.put("pushShopID", "HD340400");
-        data.put("longitude", "102.12318");
-        data.put("latitude", "256.26541");
-        data.put("address", "龙阳大道邱家大湾");
-        data.put("photo", "http://123.45.123.23/src/1.jpg");
-        data.put("name", "张三");
-        data.put("phone", "13856295489");
+        data.put("userId", "admin");
+        data.put("passwd", "123456");
 
         String ticket = MD5.stringMD5(millis+data.toJSONString());
 

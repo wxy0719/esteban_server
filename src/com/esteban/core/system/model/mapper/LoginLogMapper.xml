@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.esteban.core.system.dao.AdviceUserDao">
-  <resultMap id="BaseResultMap" type="com.esteban.core.system.model.AdviceUser">
+<mapper namespace="com.esteban.core.system.model.mapper.LoginLogMapper">
+  <resultMap id="BaseResultMap" type="com.esteban.core.system.model.LoginLog">
     <result column="f_ID" jdbcType="VARCHAR" property="id" />
     <result column="f_USERID" jdbcType="VARCHAR" property="userid" />
     <result column="f_IPADR" jdbcType="VARCHAR" property="ipadr" />
@@ -9,6 +9,7 @@
     <result column="f_TYPE" jdbcType="VARCHAR" property="type" />
     <result column="f_AREANAME" jdbcType="VARCHAR" property="areaname" />
     <result column="f_PROVNAME" jdbcType="VARCHAR" property="provname" />
+    <result column="f_TOKEN" jdbcType="VARCHAR" property="token" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,15 +70,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    f_ID, f_USERID, f_IPADR, f_TIME, f_TYPE, f_AREANAME, f_PROVNAME
+    f_ID, f_USERID, f_IPADR, f_TIME, f_TYPE, f_AREANAME, f_PROVNAME, f_TOKEN
   </sql>
-  <select id="selectByExample" parameterType="com.esteban.core.system.model.AdviceUserExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.esteban.core.system.model.LoginLogExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_advice_user
+    from t_login_log
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -85,22 +86,22 @@
       order by ${orderByClause}
     </if>
   </select>
-  <delete id="deleteByExample" parameterType="com.esteban.core.system.model.AdviceUserExample">
-    delete from t_advice_user
+  <delete id="deleteByExample" parameterType="com.esteban.core.system.model.LoginLogExample">
+    delete from t_login_log
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.esteban.core.system.model.AdviceUser">
-    insert into t_advice_user (f_ID, f_USERID, f_IPADR, 
+  <insert id="insert" parameterType="com.esteban.core.system.model.LoginLog">
+    insert into t_login_log (f_ID, f_USERID, f_IPADR, 
       f_TIME, f_TYPE, f_AREANAME, 
-      f_PROVNAME)
+      f_PROVNAME, f_TOKEN)
     values (#{id,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{ipadr,jdbcType=VARCHAR}, 
       #{time,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{areaname,jdbcType=VARCHAR}, 
-      #{provname,jdbcType=VARCHAR})
+      #{provname,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.esteban.core.system.model.AdviceUser">
-    insert into t_advice_user
+  <insert id="insertSelective" parameterType="com.esteban.core.system.model.LoginLog">
+    insert into t_login_log
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         f_ID,
@@ -122,6 +123,9 @@
       </if>
       <if test="provname != null">
         f_PROVNAME,
+      </if>
+      <if test="token != null">
+        f_TOKEN,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -146,16 +150,19 @@
       <if test="provname != null">
         #{provname,jdbcType=VARCHAR},
       </if>
+      <if test="token != null">
+        #{token,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.esteban.core.system.model.AdviceUserExample" resultType="java.lang.Long">
-    select count(*) from t_advice_user
+  <select id="countByExample" parameterType="com.esteban.core.system.model.LoginLogExample" resultType="java.lang.Long">
+    select count(*) from t_login_log
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update t_advice_user
+    update t_login_log
     <set>
       <if test="record.id != null">
         f_ID = #{record.id,jdbcType=VARCHAR},
@@ -178,20 +185,24 @@
       <if test="record.provname != null">
         f_PROVNAME = #{record.provname,jdbcType=VARCHAR},
       </if>
+      <if test="record.token != null">
+        f_TOKEN = #{record.token,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update t_advice_user
+    update t_login_log
     set f_ID = #{record.id,jdbcType=VARCHAR},
       f_USERID = #{record.userid,jdbcType=VARCHAR},
       f_IPADR = #{record.ipadr,jdbcType=VARCHAR},
       f_TIME = #{record.time,jdbcType=VARCHAR},
       f_TYPE = #{record.type,jdbcType=VARCHAR},
       f_AREANAME = #{record.areaname,jdbcType=VARCHAR},
-      f_PROVNAME = #{record.provname,jdbcType=VARCHAR}
+      f_PROVNAME = #{record.provname,jdbcType=VARCHAR},
+      f_TOKEN = #{record.token,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>

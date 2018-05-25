@@ -1,106 +1,36 @@
 package com.esteban.business.service.newsManagement.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import com.esteban.business.dao.AdsDao;
+import com.esteban.business.model.Ads;
+import com.esteban.business.model.AdsExample;
+import com.esteban.business.service.newsManagement.IAdsLogic;
+import com.esteban.core.framework.utils.UUID;
+import com.esteban.core.framework.utils.WebUtils;
+import com.esteban.core.system.dao.base.IDao;
+import com.esteban.core.system.service.base.impl.BaseServiceImpl;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import com.esteban.business.dao.AdsDao;
-import com.esteban.core.framework.utils.Page;
-import com.esteban.core.framework.utils.UUID;
-import com.esteban.core.framework.utils.WebUtils;
-import com.esteban.business.model.Ads;
-import com.esteban.business.model.AdsExample;
-import com.esteban.business.service.newsManagement.IAdsLogic;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
-public class AdsLogic implements IAdsLogic {
+public class AdsLogic extends BaseServiceImpl<Ads,AdsExample> implements IAdsLogic {
 
 	@Resource
 	private AdsDao adsDao;
-	
-	public List<Ads> listByPage(Ads t, Page page) {
-		return adsDao.listByPage(t, page);
-	}
 
-	public List<Ads> detail(AdsExample adEmp) {
-		if(adEmp!=null){
-			return adsDao.selectByExample(adEmp);
-		}
-		return null;
-	}
-	
-	
-	public List<Ads> detailWithBlob(AdsExample adEmp) {
-		if(adEmp!=null){
-			return adsDao.selectByExampleWithBLOBs(adEmp);
-		}
-		return null;
-	}
-	
-	public Ads detailFirst(AdsExample adEmp){
-		Ads ad=null;
-		if(adEmp!=null){
-			List<Ads> list_= adsDao.selectByExample(adEmp);
-			if(list_!=null&&list_.size()>0){
-				ad=list_.get(0);
-			}
-		}
-		return ad;
-	}
-	
-	
-	public Ads detailFirstWithBlob(AdsExample adEmp){
-		Ads ad=null;
-		if(adEmp!=null){
-			List<Ads> list_= adsDao.selectByExampleWithBLOBs(adEmp);
-			if(list_!=null&&list_.size()>0){
-				ad=list_.get(0);
-			}
-		}
-		return ad;
-	}
-
-	public boolean add(Ads t) {
-		int result=0;
-		if(t!=null){
-			result=adsDao.insert(t);
-		}
-		return result>0;
-	}
-
-	public boolean modify(Ads t,AdsExample emp) {
-		int result=0;
-		if(t!=null){
-			result=adsDao.updateByExampleSelective(t, emp);
-		}
-		return result>0;
-	}
-	
-	public boolean modifyAll(Ads t,AdsExample emp) {
-		int result=0;
-		if(t!=null){
-			result=adsDao.updateByExample(t, emp);
-		}
-		return result>0;
-	}
-
-	public boolean delete(AdsExample emp) {
-		int result=0;
-		if(emp!=null){
-			result=adsDao.deleteByExample(emp);
-		}
-		return result>0;
+	@Override
+	public IDao getDao() {
+		return adsDao;
 	}
 
 	public String addAds(Ads ads, HttpServletRequest req) {
@@ -136,7 +66,7 @@ public class AdsLogic implements IAdsLogic {
         }
         ads.setCreateOper(WebUtils.getOper(req).getName());
         boolean flag=false;
-        flag=add(ads);
+        flag=insert(ads);
         if("添加成功".equals(info)&&!flag){
         	info="添加失败";
         }
@@ -197,7 +127,7 @@ public class AdsLogic implements IAdsLogic {
         boolean flag=false;
         AdsExample emp=new AdsExample();
         emp.or().andIdEqualTo(ads.getId());
-        flag=modify(ads,emp);
+        flag=update(ads,emp);
         if("修改成功".equals(info)&&!flag){
         	info="修改失败";
         }

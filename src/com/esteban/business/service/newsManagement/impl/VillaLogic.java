@@ -9,6 +9,8 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.esteban.core.system.dao.base.IDao;
+import com.esteban.core.system.service.base.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -22,88 +24,17 @@ import com.esteban.business.model.VillaExample;
 import com.esteban.business.service.newsManagement.IVillaLogic;
 
 @Service
-public class VillaLogic implements IVillaLogic {
+public class VillaLogic extends BaseServiceImpl<Villa,VillaExample> implements IVillaLogic {
 
 	@Resource
 	private VillaDao villaDao;
-	
-	
-	public List<Villa> listByPage(Villa t, Page page) {
-		return villaDao.listByPage(t, page);
+
+
+	@Override
+	public IDao getDao() {
+		return villaDao;
 	}
 
-	
-	public List<Villa> detail(VillaExample emp) {
-		if(emp!=null){
-			return villaDao.selectByExample(emp);
-		}
-		return null;
-	}
-	
-	
-	public List<Villa> detailWithBlob(VillaExample emp) {
-		if(emp!=null){
-			return villaDao.selectByExampleWithBLOBs(emp);
-		}
-		return null;
-	}
-	
-	public Villa detailFirst(VillaExample emp){
-		Villa v=null;
-		List<Villa> list_=detail(emp);
-		if(list_!=null&&list_.size()>0){
-			v=list_.get(0);
-		}
-		return v;
-	}
-	
-	
-	public Villa detailFirstWithBlob(VillaExample emp){
-		Villa v=null;
-		List<Villa> list_=detailWithBlob(emp);
-		if(list_!=null&&list_.size()>0){
-			v=list_.get(0);
-		}
-		return v;
-	}
-
-	
-	public boolean add(Villa t) {
-		int result=0;
-		if(t!=null){
-			result=villaDao.insert(t);
-		}
-		return result>0;
-	}
-
-	 
-	public boolean modifyAll(Villa t,VillaExample emp) {
-		int result=0;
-		if(t!=null){
-			result=villaDao.updateByExample(t,emp);
-		}
-		return result>0;
-	}
-	
-	
-	public boolean modify(Villa t,VillaExample emp) {
-		int result=0;
-		if(t!=null){
-			result=villaDao.updateByExampleSelective(t,emp);
-		}
-		return result>0;
-	}
-
-	
-	public boolean delete(VillaExample emp) {
-		int result=0;
-		if(emp!=null){
-			result=villaDao.deleteByExample(emp);
-		}
-		return result>0;
-	}
-
-	
 	public String addVilla(Villa villa, HttpServletRequest req) {
 		String info="添加成功";
 		String[] ext={"jpg","png","gif"};
@@ -133,7 +64,7 @@ public class VillaLogic implements IVillaLogic {
         	}
         }
         boolean flag=false;
-        flag=add(villa);
+        flag=insert(villa);
         if("添加成功".equals(info)&&!flag){
         	info="添加失败";
         }
@@ -173,7 +104,7 @@ public class VillaLogic implements IVillaLogic {
         
         VillaExample vaillEmp=new VillaExample();
         vaillEmp.or().andIdEqualTo(villa.getId());
-        flag=modify(villa,vaillEmp);
+        flag=update(villa,vaillEmp);
         if("修改成功".equals(info)&&!flag){
         	info="修改失败";
         }

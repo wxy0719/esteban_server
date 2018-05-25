@@ -73,7 +73,7 @@ public class UserLogic extends BaseServiceImpl<User,UserExample> implements IUse
 		user.setId(id);
 		user.setPasswd(MD5.stringMD5("123456"));
 		
-		boolean flag=add(user);
+		boolean flag=insert(user);
 		if(!flag&&"添加成功".equals(info)){
 			info="添加失败";
 		}
@@ -136,7 +136,7 @@ public class UserLogic extends BaseServiceImpl<User,UserExample> implements IUse
 		
 		UserExample userEmp=new UserExample();
 		userEmp.or().andIdEqualTo(user.getId());
-		flag=modify(user,userEmp);
+		flag=update(user,userEmp);
 		if(!flag&&"修改成功".equals(info)){
 			info="修改失败";
 		}

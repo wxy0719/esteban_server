@@ -297,4 +297,9 @@ public abstract class DateOperator {
             return false;
         }
     }
+
+    public static long getNowTimeStamp(){
+        return System.currentTimeMillis();
+    }
+
 }

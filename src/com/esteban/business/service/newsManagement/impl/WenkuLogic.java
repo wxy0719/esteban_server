@@ -9,6 +9,8 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.esteban.core.system.dao.base.IDao;
+import com.esteban.core.system.service.base.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -25,88 +27,17 @@ import com.esteban.business.model.WenkuExample;
 import com.esteban.business.service.newsManagement.IWenKuLogic;
 
 @Service
-public class WenkuLogic implements IWenKuLogic {
+public class WenkuLogic extends BaseServiceImpl<Wenku,WenkuExample> implements IWenKuLogic {
 
 	@Resource
 	private WenkuDao WenkuDao;
-	
-	
-	public List<Wenku> listByPage(Wenku t, Page page) {
-		return WenkuDao.listByPage(t, page);
+
+
+	@Override
+	public IDao getDao() {
+		return WenkuDao;
 	}
 
-	
-	public List<Wenku> detail(WenkuExample emp) {
-		if(emp!=null){
-			return WenkuDao.selectByExample(emp);
-		}
-		return null;
-	}
-	
-	
-	public List<Wenku> detailWithBlob(WenkuExample emp) {
-		if(emp!=null){
-			return WenkuDao.selectByExampleWithBLOBs(emp);
-		}
-		return null;
-	}
-	
-	public Wenku detailFirst(WenkuExample emp){
-		Wenku wk=null;
-		List<Wenku> list_=detail(emp);
-		if(list_!=null&&list_.size()>0){
-			wk=list_.get(0);
-		}
-		return wk;
-	}
-	
-	
-	public Wenku detailFirstWithBlob(WenkuExample emp){
-		Wenku wk=null;
-		List<Wenku> list_=detailWithBlob(emp);
-		if(list_!=null&&list_.size()>0){
-			wk=list_.get(0);
-		}
-		return wk;
-	}
-
-	
-	public boolean add(Wenku t) {
-		int result=0;
-		if(t!=null){
-			result=WenkuDao.insert(t);
-		}
-		return result>0;
-	}
-
-	
-	public boolean modifyAll(Wenku t,WenkuExample emp) {
-		int result=0;
-		if(t!=null){
-			result=WenkuDao.updateByExample(t,emp);
-		}
-		return result>0;
-	}
-	
-	
-	public boolean modify(Wenku t,WenkuExample emp) {
-		int result=0;
-		if(t!=null){
-			result=WenkuDao.updateByExampleSelective(t,emp);
-		}
-		return result>0;
-	}
-
-	
-	public boolean delete(WenkuExample emp) {
-		int result=0;
-		if(emp!=null){
-			result=WenkuDao.deleteByExample(emp);
-		}
-		return result>0;
-	}
-
-	
 	public String addWenku(Wenku Wenku, HttpServletRequest req) {
 		String info="添加成功";
 		String[] ext={"ppt","doc","docx","xls","jpg","png","txt","pdf","gif"};
@@ -146,7 +77,7 @@ public class WenkuLogic implements IWenKuLogic {
         }
         Wenku.setCreateuser(WebUtils.getOper(req).getId());
         boolean flag=false;
-        flag=add(Wenku);
+        flag=insert(Wenku);
         if("添加成功".equals(info)&&!flag){
         	info="添加失败";
         }
@@ -194,7 +125,7 @@ public class WenkuLogic implements IWenKuLogic {
         WenkuExample wenKuEmp=new WenkuExample();
         wenKuEmp.or().andIdEqualTo(Wenku.getId());
         
-        flag=modify(Wenku,wenKuEmp);
+        flag=update(Wenku,wenKuEmp);
         if("修改成功".equals(info)&&!flag){
         	info="修改失败";
         }

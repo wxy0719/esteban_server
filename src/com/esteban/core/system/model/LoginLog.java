@@ -1,6 +1,6 @@
 package com.esteban.core.system.model;
 
-public class AdviceUser {
+public class LoginLog {
     private String id;
 
     private String userid;
@@ -14,6 +14,8 @@ public class AdviceUser {
     private String areaname;
 
     private String provname;
+
+    private String token;
 
     public String getId() {
         return id;
@@ -69,5 +71,13 @@ public class AdviceUser {
 
     public void setProvname(String provname) {
         this.provname = provname == null ? null : provname.trim();
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token == null ? null : token.trim();
     }
 }

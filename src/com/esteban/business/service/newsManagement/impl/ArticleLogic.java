@@ -11,6 +11,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.esteban.core.system.dao.base.IDao;
+import com.esteban.core.system.service.base.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -25,87 +27,16 @@ import com.esteban.business.model.ArticleExample;
 import com.esteban.business.service.newsManagement.IArticleLogic;
 
 @Service
-public class ArticleLogic implements IArticleLogic{
+public class ArticleLogic extends BaseServiceImpl<Article,ArticleExample> implements IArticleLogic{
 
 	@Resource
 	private ArticleDao articleDao;
-	
-	public List<Article> listByPage(Article t, Page page) {
-		List<Article> list= articleDao.listByPage(t, page);
-		if(list!=null&&list.size()!=0){
-			for(int i=0;i<list.size();i++){
-				Article a=list.get(i);
-				a.setContent("");
-			}
-		}
-		return list;
-	}
-	
-	public List<Article> detail(ArticleExample emp) {
-		if(emp!=null){
-			return articleDao.selectByExample(emp);
-		}
-		return null;
-	}
-	
-	
-	public List<Article> detailWithBlob(ArticleExample emp) {
-		if(emp!=null){
-			return articleDao.selectByExampleWithBLOBs(emp);
-		}
-		return null;
-	}
-	
-	public Article detailFirst(ArticleExample emp){
-		Article art=null;
-		List<Article> listArticle=detail(emp);
-		if(listArticle!=null&&listArticle.size()>0){
-			art=listArticle.get(0);
-		}
-		return art;
-	}
-	
-	public Article detailFirstWithBlob(ArticleExample emp){
-		Article art=null;
-		List<Article> listArticle=detailWithBlob(emp);
-		if(listArticle!=null&&listArticle.size()>0){
-			art=listArticle.get(0);
-		}
-		return art;
-	}
-	
-	public boolean add(Article t) {
-		int result=0;
-		if(t!=null){
-			result=articleDao.insert(t);
-		}
-		return result>0;
+
+	@Override
+	public IDao getDao() {
+		return articleDao;
 	}
 
-	public boolean modifyAll(Article t,ArticleExample emp) {
-		int result=0;
-		if(t!=null){
-			result=articleDao.updateByExample(t, emp);
-		}
-		return result>0;
-	}
-	
-	public boolean modify(Article t,ArticleExample emp) {
-		int result=0;
-		if(t!=null){
-			result=articleDao.updateByExampleSelective(t, emp);
-		}
-		return result>0;
-	}
-	
-	public boolean delete(ArticleExample emp) {
-		int result=0;
-		if(emp!=null){
-			result=articleDao.deleteByExample(emp);
-		}
-		return result>0;
-	}
-	
 	public Map<String,String> uploadImg(HttpServletRequest req) {
 		Map<String,String> map=new HashMap<String, String>();
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) req;

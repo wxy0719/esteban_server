@@ -80,7 +80,7 @@ java -jar mybatis-generator-core-1.3.5.jar -configfile generator.xml -overwrite
         	<columnRenamingRule searchString="^f_" replaceString="" />
         </table>
         -->
-        <table tableName="t_interface_adapter" domainObjectName="InterfaceAdapter" enableCountByExample="true" enableDeleteByPrimaryKey="true" enableInsert="true" enableSelectByExample="true" enableSelectByPrimaryKey="true" enableUpdateByExample="true" enableDeleteByExample="true">
+        <table tableName="t_operate_log" domainObjectName="OperateLog" enableCountByExample="true" enableDeleteByPrimaryKey="true" enableInsert="true" enableSelectByExample="true" enableSelectByPrimaryKey="true" enableUpdateByExample="true" enableDeleteByExample="true">
             <columnRenamingRule searchString="^f_" replaceString="" />
         </table>
     </context>

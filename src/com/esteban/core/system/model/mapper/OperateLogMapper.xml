@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.esteban.core.system.dao.UserLogDao">
-  <resultMap id="BaseResultMap" type="com.esteban.core.system.model.UserLog">
+<mapper namespace="com.esteban.core.system.model.mapper.OperateLogMapper">
+  <resultMap id="BaseResultMap" type="com.esteban.core.system.model.OperateLog">
     <result column="f_USERLOGID" jdbcType="VARCHAR" property="userlogid" />
     <result column="f_CONTENT" jdbcType="VARCHAR" property="content" />
     <result column="f_USERID" jdbcType="VARCHAR" property="userid" />
@@ -69,13 +69,13 @@
   <sql id="Base_Column_List">
     f_USERLOGID, f_CONTENT, f_USERID, f_IPADDR, f_TIME
   </sql>
-  <select id="selectByExample" parameterType="com.esteban.core.system.model.UserLogExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.esteban.core.system.model.OperateLogExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_userlog
+    from t_operate_log
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -83,20 +83,20 @@
       order by ${orderByClause}
     </if>
   </select>
-  <delete id="deleteByExample" parameterType="com.esteban.core.system.model.UserLogExample">
-    delete from t_userlog
+  <delete id="deleteByExample" parameterType="com.esteban.core.system.model.OperateLogExample">
+    delete from t_operate_log
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.esteban.core.system.model.UserLog">
-    insert into t_userlog (f_USERLOGID, f_CONTENT, f_USERID, 
+  <insert id="insert" parameterType="com.esteban.core.system.model.OperateLog">
+    insert into t_operate_log (f_USERLOGID, f_CONTENT, f_USERID, 
       f_IPADDR, f_TIME)
     values (#{userlogid,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
       #{ipaddr,jdbcType=VARCHAR}, #{time,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.esteban.core.system.model.UserLog">
-    insert into t_userlog
+  <insert id="insertSelective" parameterType="com.esteban.core.system.model.OperateLog">
+    insert into t_operate_log
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="userlogid != null">
         f_USERLOGID,
@@ -132,14 +132,14 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.esteban.core.system.model.UserLogExample" resultType="java.lang.Long">
-    select count(*) from t_userlog
+  <select id="countByExample" parameterType="com.esteban.core.system.model.OperateLogExample" resultType="java.lang.Long">
+    select count(*) from t_operate_log
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update t_userlog
+    update t_operate_log
     <set>
       <if test="record.userlogid != null">
         f_USERLOGID = #{record.userlogid,jdbcType=VARCHAR},
@@ -162,7 +162,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update t_userlog
+    update t_operate_log
     set f_USERLOGID = #{record.userlogid,jdbcType=VARCHAR},
       f_CONTENT = #{record.content,jdbcType=VARCHAR},
       f_USERID = #{record.userid,jdbcType=VARCHAR},

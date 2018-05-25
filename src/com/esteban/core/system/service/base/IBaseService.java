@@ -33,17 +33,17 @@ public interface IBaseService<T, K> {
     /**
      * 添加
      */
-    boolean add(T t);
+    boolean insert(T t);
 
     /**
      * 修改
      */
-    boolean modify(T t,K k);
+    boolean update(T t,K k);
 
     /**
      * 修改
      */
-    boolean modifyAll(T t,K k);
+    boolean updateAll(T t,K k);
 
     /**
      * 删除

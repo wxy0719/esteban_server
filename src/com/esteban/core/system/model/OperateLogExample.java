@@ -3,14 +3,14 @@ package com.esteban.core.system.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserLogExample {
+public class OperateLogExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public UserLogExample() {
+    public OperateLogExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 

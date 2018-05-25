@@ -1,6 +1,6 @@
 package com.esteban.core.system.model;
 
-public class UserLog {
+public class OperateLog {
     private String userlogid;
 
     private String content;

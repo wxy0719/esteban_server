@@ -2,14 +2,14 @@ package com.esteban.core.system.service.impl;
 
 import com.esteban.core.framework.utils.DateOperator;
 import com.esteban.core.framework.utils.IPUtils;
+import com.esteban.core.framework.utils.TokenUtils;
 import com.esteban.core.framework.utils.UUID;
-import com.esteban.core.framework.utils.WebUtils;
-import com.esteban.core.system.dao.AdviceUserDao;
 import com.esteban.core.system.dao.OperDao;
-import com.esteban.core.system.dao.UserLogDao;
 import com.esteban.core.system.dao.base.IDao;
 import com.esteban.core.system.model.*;
+import com.esteban.core.system.service.ILoginLogLogic;
 import com.esteban.core.system.service.IOperLogic;
+import com.esteban.core.system.service.IOperateLogLogic;
 import com.esteban.core.system.service.IRoleLogic;
 import com.esteban.core.system.service.base.impl.BaseServiceImpl;
 import org.apache.commons.lang.StringUtils;
@@ -20,7 +20,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOperLogic {
@@ -30,95 +32,95 @@ public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOpe
 	private OperDao operDao;
 
 	@Resource
-	private UserLogDao userLogDao;
+	private IOperateLogLogic operateLogLogic;
 	
 	@Resource
 	private IRoleLogic roleLogic;
 	
 	@Resource
-	private AdviceUserDao adviceUserDao;
+	private ILoginLogLogic loginLogLogic;
 
 	@Override
 	public IDao getDao() {
 		return operDao;
 	}
 
-	public boolean saveLog(String operUser, String info, String remoteAddr) {
-        int result=0;
-        if(!StringUtils.isBlank(operUser)){
-        	String logid=UUID.getUUID().toString(); 
-        	UserLog userLog=new UserLog();
-        	userLog.setUserlogid(logid);
-        	userLog.setContent(info);
-        	userLog.setUserid(operUser);
-        	userLog.setIpaddr(remoteAddr);
-            result=userLogDao.insert(userLog);
-        }
-        return result>0;
-    }
-	
-	
-    public boolean updateUserLoginInfo(String userid, String remoteAddr, String type, String loginTime, String provName, String areaName) {
-        String logid=UUID.getUUID().toString();
-        AdviceUser adviceUser=new AdviceUser();
-        adviceUser.setId(logid);
-        adviceUser.setAreaname(areaName);
-        adviceUser.setIpadr(remoteAddr);
-        adviceUser.setProvname(provName);
-        adviceUser.setTime(loginTime);
-        adviceUser.setType(type);
-        adviceUser.setUserid(userid);
-        return adviceUserDao.insert(adviceUser)>0;
-    }
+	public Map<String, String> login(Oper oper, String validateString, String deviceCode, HttpServletRequest req, HttpServletResponse res) {
+		Map<String, String> result = new HashMap<>();
+		String status = "400";
+		String message = "";
+		String token = "";
+		if ("1001".equals(oper.getStatus())) {
+			if (oper.getPasswd().equals(validateString)) {
 
-	
-	public String login(Oper oper, String validateString,
-			HttpServletRequest req, HttpServletResponse res) {
-		 	String flag="";
-	        if ("1".equals(oper.getStatus())) {
-	            if (oper.getPasswd().equals(validateString)) {
-	                oper.setPasswd("");
+				// 增加登录日志
+				log.info("用户[" + oper.getName() + "]: " + DateOperator.format(new Date(), "yyyy-MM-dd HH:mm:ss") + "登陆,Ip:[" + req.getRemoteAddr() + "] ");
+				saveLog(oper.getName(), "登录成功[" + oper.getName() + "]", req.getRemoteAddr());
 
-	                // 增加登录日志
-	                log.info("用户[" + oper.getName() + "]�?" + DateOperator.format(new Date(), "yyyy-MM-dd HH:mm:ss") + "登陆,Ip:[" + req.getRemoteAddr() + "] ");
-	                boolean Logflag=saveLog(oper.getName(), "登录成功[" + oper.getName() + "]", req.getRemoteAddr());
-	                String loginTime = DateOperator.format(new Date(), "yyyyMMddHHmmss");
-	                String[] loginAddr = IPUtils.getAreaAndAreaSubByIPInSina(req.getRemoteAddr());
+				//修改登录记录
+				String loginTime = DateOperator.format(new Date(), "yyyyMMddHHmmss");
+				String[] loginAddr = IPUtils.getAreaAndAreaSubByIPInSina(req.getRemoteAddr());
+				updateUserLoginInfo(oper.getId(), req.getRemoteAddr(), "WEB", loginTime, loginAddr[0], loginAddr[1]);
 
-	                //修改登录记录
-	                boolean Infoflag=updateUserLoginInfo(oper.getName(), req.getRemoteAddr(), "WEB", loginTime, loginAddr[0], loginAddr[1]);
-	                
-	                if(Logflag&&Infoflag){
-		                //登录验证完成，添加session信息并跳�?
-		                req.getSession().setAttribute(WebUtils.ADMIN_OPER, oper);
-		                req.getSession().setAttribute("currentLoginTime", loginTime);
-		                int time=1800;
-		                try{
-		                	time=Integer.parseInt(WebUtils.getConfigValByName("MaxInactiveInterval"));
-		                }catch (Exception e) {
-		                	time=1800;
-						}
-		                req.getSession().setMaxInactiveInterval(time);
-		                String path = (String) req.getSession().getAttribute("RedirectPath");
-	
-		                if (StringUtils.isNotBlank(path)) {
-		                    flag = "redirectURL";
-		                } else {
-		                    flag = "redirectIndex";
-		                }
-	                }
-	            } else {
-	                flag = "infoErro";
-	            }
-	        } else if ("0".equals(oper.getStatus())) {
-	            flag="userNotPass";
-	        } else {
-	            flag="userNotActive";
-	        }
-	        
-	        return flag;
+				//登录验证完成
+				token = TokenUtils.getToken(oper.getId(),deviceCode);
+
+				status = "200";
+			} else {
+				message = "用户名密码验证不通过";
+			}
+		} else if ("1002".equals(oper.getStatus())) {
+			message="用户未启用";
+		} else {
+			message="用户已失效";
+		}
+
+		result.put("status",status);
+		result.put("message",message);
+		result.put("token",token);
+		return result;
 	}
 
+	public void saveLog(String operUser, String info, String remoteAddr) {
+		if(!StringUtils.isBlank(operUser)){
+			String logid=UUID.getUUID().toString();
+			OperateLog operateLog=new OperateLog();
+			operateLog.setUserlogid(logid);
+			operateLog.setContent(info);
+			operateLog.setUserid(operUser);
+			operateLog.setIpaddr(remoteAddr);
+			operateLogLogic.insert(operateLog);
+		}
+	}
+
+	public void updateUserLoginInfo(String userid, String remoteAddr, String type, String loginTime, String provName, String areaName) {
+		//判断是否有该用户的登录记录
+		LoginLogExample loginExm=new LoginLogExample();
+		loginExm.createCriteria().andUseridEqualTo(userid);
+		LoginLog l = loginLogLogic.detailFirst(loginExm);
+
+		if(l==null){
+			//如果没有记录，则插入一条记录
+			String logid=UUID.getUUID().toString();
+			LoginLog loginLog=new LoginLog();
+			loginLog.setId(logid);
+			loginLog.setAreaname(areaName);
+			loginLog.setIpadr(remoteAddr);
+			loginLog.setProvname(provName);
+			loginLog.setTime(loginTime);
+			loginLog.setType(type);
+			loginLog.setUserid(userid);
+			loginLogLogic.insert(loginLog);
+		}else{
+			//如果已有记录，则更新这条记录的对应信息
+			loginExm.clear();
+			loginExm.createCriteria().andAreanameEqualTo(areaName).andIpadrEqualTo(remoteAddr).andProvnameEqualTo(provName)
+					.andTimeEqualTo(loginTime).andTypeEqualTo(type);
+			loginLogLogic.update(l,loginExm);
+		}
+
+
+	}
 	
 	public List<String> getOperRights(Oper oper) {
 		OperExample operEmp=new OperExample();

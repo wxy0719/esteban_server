@@ -55,7 +55,7 @@ public abstract class BaseServiceImpl<T,K> implements IBaseService<T,K> {
     }
 
     @Override
-    public boolean add(T t) {
+    public boolean insert(T t) {
         int result=0;
         if(t!=null){
             result=getDao().insert(t);
@@ -64,7 +64,7 @@ public abstract class BaseServiceImpl<T,K> implements IBaseService<T,K> {
     }
 
     @Override
-    public boolean modify(T t, K k) {
+    public boolean update(T t, K k) {
         int result=0;
         if(t!=null){
             result=getDao().updateByExampleSelective(t,k);
@@ -73,7 +73,7 @@ public abstract class BaseServiceImpl<T,K> implements IBaseService<T,K> {
     }
 
     @Override
-    public boolean modifyAll(T t, K k) {
+    public boolean updateAll(T t, K k) {
         int result=0;
         if(t!=null){
             result=getDao().updateByExample(t,k);
