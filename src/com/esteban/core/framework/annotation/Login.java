@@ -15,5 +15,9 @@ import com.esteban.core.framework.utils.WebUtils;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD })
 public @interface Login {
-    public String value() default WebUtils.AGENT_OPER;
+
+    public int expireSecond() default 1800;
+
+    public String userType() default WebUtils.ADMIN_OPER;
+
 }

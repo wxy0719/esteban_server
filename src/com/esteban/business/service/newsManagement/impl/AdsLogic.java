@@ -64,7 +64,7 @@ public class AdsLogic extends BaseServiceImpl<Ads,AdsExample> implements IAdsLog
 				e.printStackTrace();
 			}
         }
-        ads.setCreateOper(WebUtils.getOper(req).getName());
+        ads.setCreateOper("");
         boolean flag=false;
         flag=insert(ads);
         if("添加成功".equals(info)&&!flag){

@@ -1,5 +1,18 @@
 package com.esteban.core.framework.utils;
 
+import com.esteban.core.system.model.Config;
+import com.esteban.core.system.model.ConfigExample;
+import com.esteban.core.system.model.LoginLog;
+import com.esteban.core.system.model.Oper;
+import com.esteban.core.system.service.IConfigLogic;
+import com.esteban.core.system.service.ILoginLogLogic;
+import com.esteban.core.system.service.IOperLogic;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,21 +23,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
-
-import com.esteban.business.model.Agent;
-import com.esteban.core.system.model.Config;
-import com.esteban.core.system.model.ConfigExample;
-import com.esteban.core.system.model.Oper;
-import com.esteban.core.system.service.IConfigLogic;
-
-import net.sf.json.JSONObject;
 
 /**
  * @author esteban
@@ -37,35 +35,23 @@ public class WebUtils {
     public static final String AGENT_OPER = "webUser";
     public static final String AGENT_ANDROID = "AgentClient";
 
-    public static Object getOper(HttpSession session, String operSessionName) {
-        return session.getAttribute(operSessionName);
+    public static boolean checkTokenIsValid(String token){
+        ILoginLogLogic loginLogLogic=(ILoginLogLogic)SpringBeanFactory.getBean("loginLogLogic");
+        return loginLogLogic.checkTokenIsValid(token)!=null?true:false;
     }
 
-    public static Agent getAgent(HttpServletRequest request) {
-        return getAgent(request.getSession());
-    }
-
-    public static Agent getAgent(HttpSession session) {
-        Object obj = getOper(session, AGENT_OPER);
-        Agent agent = null;
-        if (null != obj) {
-            agent = (Agent) obj;
-        }
-        return agent;
-    }
-
-    public static Oper getOper(HttpServletRequest request) {
-        return getOper(request.getSession());
-    }
-
-    public static Oper getOper(HttpSession session) {
-        Object obj = getOper(session, ADMIN_OPER);
+    public static Oper getOper(String token){
         Oper oper = null;
-        if (null != obj) {
-            oper = (Oper) obj;
+        ILoginLogLogic loginLogLogic=(ILoginLogLogic)SpringBeanFactory.getBean("loginLogLogic");
+        LoginLog log = loginLogLogic.checkTokenIsValid(token);
+
+        if(log!=null){
+            IOperLogic operLogic=(IOperLogic)SpringBeanFactory.getBean("operLogic");
+            oper = operLogic.getOperById(log.getUserid());
         }
         return oper;
     }
+
 
     public static void toJson(HttpServletResponse response, String data, Object obj) {
         response.setContentType("text/html");

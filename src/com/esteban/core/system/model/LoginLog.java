@@ -17,6 +17,8 @@ public class LoginLog {
 
     private String token;
 
+    private String expireSecond;
+
     public String getId() {
         return id;
     }
@@ -79,5 +81,13 @@ public class LoginLog {
 
     public void setToken(String token) {
         this.token = token == null ? null : token.trim();
+    }
+
+    public String getExpireSecond() {
+        return expireSecond;
+    }
+
+    public void setExpireSecond(String expireSecond) {
+        this.expireSecond = expireSecond == null ? null : expireSecond.trim();
     }
 }

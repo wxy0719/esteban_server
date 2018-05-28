@@ -6,7 +6,13 @@ import com.esteban.core.framework.utils.TokenUtils;
 import com.esteban.core.framework.utils.UUID;
 import com.esteban.core.system.dao.OperDao;
 import com.esteban.core.system.dao.base.IDao;
-import com.esteban.core.system.model.*;
+import com.esteban.core.system.model.LoginLog;
+import com.esteban.core.system.model.LoginLogExample;
+import com.esteban.core.system.model.Oper;
+import com.esteban.core.system.model.OperExample;
+import com.esteban.core.system.model.OperateLog;
+import com.esteban.core.system.model.Role;
+import com.esteban.core.system.model.RoleExample;
 import com.esteban.core.system.service.ILoginLogLogic;
 import com.esteban.core.system.service.IOperLogic;
 import com.esteban.core.system.service.IOperateLogLogic;
@@ -101,6 +107,7 @@ public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOpe
 		LoginLogExample loginExm=new LoginLogExample();
 		loginExm.createCriteria().andUseridEqualTo(userid);
 		LoginLog l = loginLogLogic.detailFirst(loginExm);
+        String expireSecond="1800";
 
 		if(l==null){
 			//如果没有记录，则插入一条记录
@@ -114,6 +121,7 @@ public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOpe
 			loginLog.setType(type);
 			loginLog.setUserid(userid);
 			loginLog.setToken(token);
+            loginLog.setExpireSecond(expireSecond);
 			loginLogLogic.insert(loginLog);
 		}else{
 			//如果已有记录，则更新这条记录的对应信息
@@ -123,11 +131,21 @@ public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOpe
 			l.setTime(loginTime);
 			l.setType(type);
 			l.setToken(token);
+            l.setExpireSecond(expireSecond);
 			loginExm.clear();
 			loginExm.createCriteria().andIdEqualTo(l.getId()).andUseridEqualTo(userid);
 			loginLogLogic.update(l,loginExm);
 		}
 	}
+
+    public Oper getOperById(String userId){
+        Oper oper = null;
+        OperExample operExm = new OperExample();
+        operExm.createCriteria().andIdEqualTo(userId);
+        oper = detailFirst(operExm);
+
+        return oper;
+    }
 	
 	public List<String> getOperRights(Oper oper) {
 		OperExample operEmp=new OperExample();

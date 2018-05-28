@@ -39,7 +39,7 @@ public class ExportCSV {
         super();
         this.response = response;
         if (StringUtils.isBlank(exportFilename)) {
-            this.exportFilename = DateOperator.getOffsetDate(0, DateOperator.DATA_TIME_PERSISTENT) + ".csv";
+            this.exportFilename = DateOperator.getOffsetDayDate(0, DateOperator.DATA_TIME_PERSISTENT) + ".csv";
         } else {
             this.exportFilename = exportFilename;
         }

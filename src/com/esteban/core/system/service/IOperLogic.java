@@ -18,7 +18,9 @@ public interface IOperLogic extends IBaseService<Oper, OperExample> {
 	void saveLog(String operUser, String info, String remoteAddr);
 
 	void updateUserLoginInfo(String mobile, String remoteAddr, String type,String loginTime, String provName, String areaName, String token);
-	
+
+    public Oper getOperById(String userId);
+
 	List<String> getOperRights(Oper oper);
 
 	String getOperRightsString(Oper oper); 

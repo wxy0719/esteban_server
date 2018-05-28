@@ -663,6 +663,76 @@ public class LoginLogExample {
             addCriterion("f_TOKEN not between", value1, value2, "token");
             return (Criteria) this;
         }
+
+        public Criteria andExpireSecondIsNull() {
+            addCriterion("f_EXPIRE_SECOND is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpireSecondIsNotNull() {
+            addCriterion("f_EXPIRE_SECOND is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpireSecondEqualTo(String value) {
+            addCriterion("f_EXPIRE_SECOND =", value, "expireSecond");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpireSecondNotEqualTo(String value) {
+            addCriterion("f_EXPIRE_SECOND <>", value, "expireSecond");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpireSecondGreaterThan(String value) {
+            addCriterion("f_EXPIRE_SECOND >", value, "expireSecond");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpireSecondGreaterThanOrEqualTo(String value) {
+            addCriterion("f_EXPIRE_SECOND >=", value, "expireSecond");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpireSecondLessThan(String value) {
+            addCriterion("f_EXPIRE_SECOND <", value, "expireSecond");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpireSecondLessThanOrEqualTo(String value) {
+            addCriterion("f_EXPIRE_SECOND <=", value, "expireSecond");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpireSecondLike(String value) {
+            addCriterion("f_EXPIRE_SECOND like", value, "expireSecond");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpireSecondNotLike(String value) {
+            addCriterion("f_EXPIRE_SECOND not like", value, "expireSecond");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpireSecondIn(List<String> values) {
+            addCriterion("f_EXPIRE_SECOND in", values, "expireSecond");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpireSecondNotIn(List<String> values) {
+            addCriterion("f_EXPIRE_SECOND not in", values, "expireSecond");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpireSecondBetween(String value1, String value2) {
+            addCriterion("f_EXPIRE_SECOND between", value1, value2, "expireSecond");
+            return (Criteria) this;
+        }
+
+        public Criteria andExpireSecondNotBetween(String value1, String value2) {
+            addCriterion("f_EXPIRE_SECOND not between", value1, value2, "expireSecond");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

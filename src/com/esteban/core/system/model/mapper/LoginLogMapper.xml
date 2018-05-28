@@ -10,6 +10,7 @@
     <result column="f_AREANAME" jdbcType="VARCHAR" property="areaname" />
     <result column="f_PROVNAME" jdbcType="VARCHAR" property="provname" />
     <result column="f_TOKEN" jdbcType="VARCHAR" property="token" />
+    <result column="f_EXPIRE_SECOND" jdbcType="VARCHAR" property="expireSecond" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -70,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    f_ID, f_USERID, f_IPADR, f_TIME, f_TYPE, f_AREANAME, f_PROVNAME, f_TOKEN
+    f_ID, f_USERID, f_IPADR, f_TIME, f_TYPE, f_AREANAME, f_PROVNAME, f_TOKEN, f_EXPIRE_SECOND
   </sql>
   <select id="selectByExample" parameterType="com.esteban.core.system.model.LoginLogExample" resultMap="BaseResultMap">
     select
@@ -95,10 +96,12 @@
   <insert id="insert" parameterType="com.esteban.core.system.model.LoginLog">
     insert into t_login_log (f_ID, f_USERID, f_IPADR, 
       f_TIME, f_TYPE, f_AREANAME, 
-      f_PROVNAME, f_TOKEN)
+      f_PROVNAME, f_TOKEN, f_EXPIRE_SECOND
+      )
     values (#{id,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{ipadr,jdbcType=VARCHAR}, 
       #{time,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{areaname,jdbcType=VARCHAR}, 
-      #{provname,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR})
+      #{provname,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, #{expireSecond,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.esteban.core.system.model.LoginLog">
     insert into t_login_log
@@ -127,6 +130,9 @@
       <if test="token != null">
         f_TOKEN,
       </if>
+      <if test="expireSecond != null">
+        f_EXPIRE_SECOND,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -152,6 +158,9 @@
       </if>
       <if test="token != null">
         #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="expireSecond != null">
+        #{expireSecond,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -188,6 +197,9 @@
       <if test="record.token != null">
         f_TOKEN = #{record.token,jdbcType=VARCHAR},
       </if>
+      <if test="record.expireSecond != null">
+        f_EXPIRE_SECOND = #{record.expireSecond,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -202,9 +214,15 @@
       f_TYPE = #{record.type,jdbcType=VARCHAR},
       f_AREANAME = #{record.areaname,jdbcType=VARCHAR},
       f_PROVNAME = #{record.provname,jdbcType=VARCHAR},
-      f_TOKEN = #{record.token,jdbcType=VARCHAR}
+      f_TOKEN = #{record.token,jdbcType=VARCHAR},
+      f_EXPIRE_SECOND = #{record.expireSecond,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+
+  <select id="getLoginInfoByToken" resultMap="BaseResultMap">
+      select t.* from t_login_log t
+          where t.f_token = #{token}
+  </select>
 </mapper>

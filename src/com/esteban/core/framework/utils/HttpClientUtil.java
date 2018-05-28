@@ -213,26 +213,4 @@ public class HttpClientUtil {
 		return jsonResult;
 	}
 
-	public static void main(String[] args) {
-		String millis=String.valueOf(System.currentTimeMillis()/1000)+ Utility.getRandomNum(8);
-		//MD5加密
-		JSONObject data = new JSONObject();
-
-		//插入data   100068
-		data.put("userId", "admin");
-		data.put("passwd", "123456");
-
-		String ticket = MD5.stringMD5(millis+data.toJSONString());
-
-		Map<String,String> params = new HashMap<>();
-		params.put("adapterNo", "10001");
-		params.put("ticket", ticket);
-		params.put("data", data.toJSONString());
-		params.put("time", millis);
-		params.put("token", "token");
-
-		JSONObject obj = HttpClientUtil.postForm("http://localhost:8080/esteban_server/interfaceAdapter", params, true);
-		System.out.println(obj);
-	}
-	
 }

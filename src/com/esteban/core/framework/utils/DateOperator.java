@@ -83,6 +83,20 @@ public abstract class DateOperator {
     }
 
     /**
+     * 获得当天偏移秒数的日期
+     *
+     * @param offsetSecond 偏移秒数
+     * @param format 日期格式
+     * @return String
+     * @since 2013-7-1
+     */
+    public static String getOffsetSecondDate(int offsetSecond, String format) {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.SECOND, offsetSecond);
+        return format(c.getTime(), format);
+    }
+
+    /**
      * 获得当天偏移天数的日期
      *
      * @param offsetDay 偏移天数
@@ -90,32 +104,10 @@ public abstract class DateOperator {
      * @return String
      * @since 2013-7-1
      */
-    public static String getOffsetDate(int offsetDay, String format) {
+    public static String getOffsetDayDate(int offsetDay, String format) {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DAY_OF_MONTH, offsetDay);
         return format(c.getTime(), format);
-    }
-
-    /**
-     * 获得当天偏移天数的日期：格式yyyyMMdd
-     *
-     * @param offsetDay 偏移天数
-     * @return String yyyyMMdd
-     * @since 2013-7-1
-     */
-    public static String getOffsetDate(int offsetDay) {
-        return getOffsetDate(offsetDay, "yyyyMMdd");
-    }
-
-    /**
-     * 获得当天偏移天数的月份：格式yyyyMM
-     *
-     * @param offsetDay 偏移天数
-     * @return String yyyyMM
-     * @since 2013-7-1
-     */
-    public static String getOffsetDateMonth(int offsetDay) {
-        return getOffsetDate(offsetDay, "yyyyMM");
     }
 
     /**
@@ -130,17 +122,6 @@ public abstract class DateOperator {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.MONTH, offsetMonth);
         return format(c.getTime(), format);
-    }
-
-    /**
-     * 获取当月偏移月份的日期：格式yyyyMM
-     *
-     * @param offsetMonth 偏移月份
-     * @return String yyyyMM
-     * @since 2013-7-1
-     */
-    public static String getOffsetMonth(int offsetMonth) {
-        return getOffsetMonth(offsetMonth, "yyyyMM");
     }
 
     /**
