@@ -1,14 +1,11 @@
 package com.esteban.core.framework.filter;
 
-import com.esteban.business.model.Agent;
 import com.esteban.core.framework.annotation.Login;
 import com.esteban.core.framework.exception.AdminLoginException;
-import com.esteban.core.framework.exception.LoginException;
+import com.esteban.core.framework.exception.NotLoginException;
 import com.esteban.core.framework.utils.HttpUtils;
 import com.esteban.core.framework.utils.WebUtils;
-import com.esteban.core.system.model.Oper;
 import com.esteban.core.system.service.ILoginLogLogic;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.MDC;
@@ -45,7 +42,7 @@ public class GlobalHandlerInterceptor implements HandlerInterceptor {
         if (null != login) {
             if (WebUtils.AGENT_OPER.equals(login.userType())) {
                 String path = request.getRequestURL().toString();
-                throw new LoginException("请登陆系统!");
+                throw new NotLoginException("请登陆系统!");
             } else if (WebUtils.ADMIN_OPER.equals(login.userType())) {
                 String path = request.getRequestURL().toString();
                 throw new AdminLoginException("请登陆系统！");

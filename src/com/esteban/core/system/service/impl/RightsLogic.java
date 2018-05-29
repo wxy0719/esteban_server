@@ -51,8 +51,8 @@ public class RightsLogic extends BaseServiceImpl<Rights,RightsExample> implement
             String token = dataJson.getString("token");
             boolean isTokenVaild = WebUtils.checkTokenIsValid(token);
             if(!isTokenVaild){
-                result.put("code", "403");
-                result.put("msg", "用户未登录!");
+                result.put("code","403");
+                result.put("message","token无效或用户未登录！");
                 return result;
             }
 

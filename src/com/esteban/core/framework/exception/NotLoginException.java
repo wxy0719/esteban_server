@@ -6,13 +6,13 @@ package com.esteban.core.framework.exception;
  * @author esteban
  * @since 2014年5月23日
  */
-public class LoginException extends RuntimeException {
+public class NotLoginException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     /**
      * 构造方法
      */
-    public LoginException() {
+    public NotLoginException() {
         super();
     }
 
@@ -24,7 +24,7 @@ public class LoginException extends RuntimeException {
      * @param enableSuppression
      * @param writableStackTrace
      */
-    public LoginException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public NotLoginException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 
@@ -34,7 +34,7 @@ public class LoginException extends RuntimeException {
      * @param message
      * @param cause
      */
-    public LoginException(String message, Throwable cause) {
+    public NotLoginException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -43,7 +43,7 @@ public class LoginException extends RuntimeException {
      *
      * @param message
      */
-    public LoginException(String message) {
+    public NotLoginException(String message) {
         super(message);
     }
 
@@ -52,7 +52,7 @@ public class LoginException extends RuntimeException {
      *
      * @param cause
      */
-    public LoginException(Throwable cause) {
+    public NotLoginException(Throwable cause) {
         super(cause);
     }
 

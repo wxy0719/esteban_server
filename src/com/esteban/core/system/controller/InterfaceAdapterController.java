@@ -1,7 +1,9 @@
 package com.esteban.core.system.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.esteban.core.framework.utils.*;
+import com.esteban.core.framework.utils.MD5;
+import com.esteban.core.framework.utils.SpringBeanFactory;
+import com.esteban.core.framework.utils.StringUtil;
+import com.esteban.core.framework.utils.Utility;
 import com.esteban.core.system.model.InterfaceAdapter;
 import com.esteban.core.system.model.InterfaceAdapterExample;
 import com.esteban.core.system.service.IInterfaceAdapterLogic;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -104,11 +107,21 @@ public class InterfaceAdapterController {
 
                 result.put("code","200");
                 result.put("message","接口平台访问成功！");
-                result.put("result",rtn);
+                result.put("data",rtn);
                 return result;
 
-            } catch (Exception e) {
+            } catch (NoSuchMethodException e) {
                 e.printStackTrace();
+                result.put("code","401");
+                result.put("message",adapterNo+"对应的接口方法不存在！");
+                return result;
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+                result.put("code","401");
+                result.put("message",adapterNo+"程序执行错误！");
+                return result;
             }
         }else{
             result.put("code","500");

@@ -26,13 +26,14 @@
 	
 	<!-- 自定义错误，并跳转至对应的处理页面 -->
 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionAttribute" value="exception"></property>
 		<property name="exceptionMappings">
 			<props>
-				<prop key="com.esteban.framework.exception.AdminLoginException">admin/login</prop>
+				<prop key="com.esteban.core.framework.exception.AdminLoginException" >erroHandler</prop>
 			</props>
 		</property>
 	</bean>
-	
+
 	<bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 	    <property name="maxUploadSize" value="1048576000"/>
 	</bean>

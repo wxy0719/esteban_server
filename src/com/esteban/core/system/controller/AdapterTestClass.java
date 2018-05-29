@@ -24,7 +24,7 @@ public class AdapterTestClass {
 //        data.put("passwd", "123456");
 
         //获取权限 10002
-        data.put("token","eyd0eXAnOidKV1QnLCdhbGcnOidIUzI1Nid9.eydpc3MnOidlc3RlYmFuJywnc3ViJzonMScsJ2V4cCc6JzE4MDBzJywnaWF0JzonMTUyNzQ5OTA4NjExNid9.bd06637aea3fbea4ca9b27606f9f0a7b");
+        data.put("token","eyd0eXAnOidKV1QnLCdhbGcnOidIUzI1Nid9.eydpc3MnOidlc3RlYmFuJywnc3ViJzonMScsJ2V4cCc6JzE4MDBzJywnaWF0JzonMTUyNzU3OTQ1MjgwMSd9.e28e256ace8152571dfe21634b651a52");
 
         String ticket = MD5.stringMD5(millis+data.toJSONString());
 

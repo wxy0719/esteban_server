@@ -224,5 +224,6 @@
   <select id="getLoginInfoByToken" resultMap="BaseResultMap">
       select t.* from t_login_log t
           where t.f_token = #{token}
+          and ((UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(t.f_time)) &lt;= t.f_expire_second)
   </select>
 </mapper>
