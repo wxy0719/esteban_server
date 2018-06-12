@@ -5,6 +5,8 @@ public class LoginLog {
 
     private String userid;
 
+    private String mac;
+
     private String ipadr;
 
     private String time;
@@ -33,6 +35,14 @@ public class LoginLog {
 
     public void setUserid(String userid) {
         this.userid = userid == null ? null : userid.trim();
+    }
+
+    public String getMac() {
+        return mac;
+    }
+
+    public void setMac(String mac) {
+        this.mac = mac == null ? null : mac.trim();
     }
 
     public String getIpadr() {

@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.esteban.core.system.model.LoginLog">
     <result column="f_ID" jdbcType="VARCHAR" property="id" />
     <result column="f_USERID" jdbcType="VARCHAR" property="userid" />
+    <result column="f_MAC" jdbcType="VARCHAR" property="mac" />
     <result column="f_IPADR" jdbcType="VARCHAR" property="ipadr" />
     <result column="f_TIME" jdbcType="VARCHAR" property="time" />
     <result column="f_TYPE" jdbcType="VARCHAR" property="type" />
@@ -71,7 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    f_ID, f_USERID, f_IPADR, f_TIME, f_TYPE, f_AREANAME, f_PROVNAME, f_TOKEN, f_EXPIRE_SECOND
+    f_ID, f_USERID, f_MAC, f_IPADR, f_TIME, f_TYPE, f_AREANAME, f_PROVNAME, f_TOKEN, 
+    f_EXPIRE_SECOND
   </sql>
   <select id="selectByExample" parameterType="com.esteban.core.system.model.LoginLogExample" resultMap="BaseResultMap">
     select
@@ -94,14 +96,14 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.esteban.core.system.model.LoginLog">
-    insert into t_login_log (f_ID, f_USERID, f_IPADR, 
-      f_TIME, f_TYPE, f_AREANAME, 
-      f_PROVNAME, f_TOKEN, f_EXPIRE_SECOND
-      )
-    values (#{id,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{ipadr,jdbcType=VARCHAR}, 
-      #{time,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{areaname,jdbcType=VARCHAR}, 
-      #{provname,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, #{expireSecond,jdbcType=VARCHAR}
-      )
+    insert into t_login_log (f_ID, f_USERID, f_MAC, 
+      f_IPADR, f_TIME, f_TYPE, 
+      f_AREANAME, f_PROVNAME, f_TOKEN, 
+      f_EXPIRE_SECOND)
+    values (#{id,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{mac,jdbcType=VARCHAR}, 
+      #{ipadr,jdbcType=VARCHAR}, #{time,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{areaname,jdbcType=VARCHAR}, #{provname,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, 
+      #{expireSecond,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.esteban.core.system.model.LoginLog">
     insert into t_login_log
@@ -111,6 +113,9 @@
       </if>
       <if test="userid != null">
         f_USERID,
+      </if>
+      <if test="mac != null">
+        f_MAC,
       </if>
       <if test="ipadr != null">
         f_IPADR,
@@ -140,6 +145,9 @@
       </if>
       <if test="userid != null">
         #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="mac != null">
+        #{mac,jdbcType=VARCHAR},
       </if>
       <if test="ipadr != null">
         #{ipadr,jdbcType=VARCHAR},
@@ -179,6 +187,9 @@
       <if test="record.userid != null">
         f_USERID = #{record.userid,jdbcType=VARCHAR},
       </if>
+      <if test="record.mac != null">
+        f_MAC = #{record.mac,jdbcType=VARCHAR},
+      </if>
       <if test="record.ipadr != null">
         f_IPADR = #{record.ipadr,jdbcType=VARCHAR},
       </if>
@@ -209,6 +220,7 @@
     update t_login_log
     set f_ID = #{record.id,jdbcType=VARCHAR},
       f_USERID = #{record.userid,jdbcType=VARCHAR},
+      f_MAC = #{record.mac,jdbcType=VARCHAR},
       f_IPADR = #{record.ipadr,jdbcType=VARCHAR},
       f_TIME = #{record.time,jdbcType=VARCHAR},
       f_TYPE = #{record.type,jdbcType=VARCHAR},
@@ -220,7 +232,6 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-
   <select id="getLoginInfoByToken" resultMap="BaseResultMap">
       select t.* from t_login_log t
           where t.f_token = #{token}

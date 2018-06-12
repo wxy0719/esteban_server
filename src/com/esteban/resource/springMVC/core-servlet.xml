@@ -22,6 +22,10 @@
 			<mvc:mapping path="/**" />
 			<bean class="com.esteban.core.framework.filter.GlobalHandlerInterceptor" />
 		</mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**" />
+            <bean class="com.esteban.core.framework.filter.CrossDomainInterceptor" />
+        </mvc:interceptor>
 	</mvc:interceptors>
 	
 	<!-- 自定义错误，并跳转至对应的处理页面 -->

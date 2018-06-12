@@ -11,4 +11,6 @@ public interface ILoginLogic {
 
     public Object login(HttpServletRequest request, HttpServletResponse response);
 
+    public Object refreshToken(HttpServletRequest request, HttpServletResponse response);
+
 }

@@ -6,18 +6,21 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.esteban.core.system.model.LoginLog;
 import com.esteban.core.system.model.Oper;
 import com.esteban.core.system.model.OperExample;
 import com.esteban.core.system.service.base.IBaseService;
 
 public interface IOperLogic extends IBaseService<Oper, OperExample> {
 
-	Map<String, String> login(Oper oper, String validateString, String deviceCode, HttpServletRequest req,
+	Map<String, String> login(Oper oper, String validateString, String deviceCode, String mac ,HttpServletRequest req,
 							  HttpServletResponse res);
+
+    public Map<String, String> refreshLogin(Oper oper, LoginLog log, String mac, HttpServletRequest req, HttpServletResponse res);
 
 	void saveLog(String operUser, String info, String remoteAddr);
 
-	void updateUserLoginInfo(String mobile, String remoteAddr, String type,String loginTime, String provName, String areaName, String token);
+	void updateUserLoginInfo(String mobile, String remoteAddr, String mac, String type,String loginTime, String provName, String areaName, String token);
 
     public Oper getOperById(String userId);
 

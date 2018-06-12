@@ -1,6 +1,7 @@
 package com.esteban.core.system.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.esteban.core.framework.utils.Base64Utils;
 import com.esteban.core.framework.utils.Page;
 import com.esteban.core.framework.utils.StringUtil;
 import com.esteban.core.framework.utils.Utility;
@@ -38,7 +39,9 @@ public class RightsLogic extends BaseServiceImpl<Rights,RightsExample> implement
 
     public Object getRights(HttpServletRequest request, HttpServletResponse response){
         Map<String,Object> result = new HashMap<>();
+
         String dataStr = request.getParameter("data");
+        dataStr = Base64Utils.base64Decode(dataStr);
 
         if(Utility.isNotEmpty(dataStr)) {
             JSONObject dataJson = JSONObject.parseObject(dataStr);

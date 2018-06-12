@@ -244,6 +244,76 @@ public class LoginLogExample {
             return (Criteria) this;
         }
 
+        public Criteria andMacIsNull() {
+            addCriterion("f_MAC is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMacIsNotNull() {
+            addCriterion("f_MAC is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMacEqualTo(String value) {
+            addCriterion("f_MAC =", value, "mac");
+            return (Criteria) this;
+        }
+
+        public Criteria andMacNotEqualTo(String value) {
+            addCriterion("f_MAC <>", value, "mac");
+            return (Criteria) this;
+        }
+
+        public Criteria andMacGreaterThan(String value) {
+            addCriterion("f_MAC >", value, "mac");
+            return (Criteria) this;
+        }
+
+        public Criteria andMacGreaterThanOrEqualTo(String value) {
+            addCriterion("f_MAC >=", value, "mac");
+            return (Criteria) this;
+        }
+
+        public Criteria andMacLessThan(String value) {
+            addCriterion("f_MAC <", value, "mac");
+            return (Criteria) this;
+        }
+
+        public Criteria andMacLessThanOrEqualTo(String value) {
+            addCriterion("f_MAC <=", value, "mac");
+            return (Criteria) this;
+        }
+
+        public Criteria andMacLike(String value) {
+            addCriterion("f_MAC like", value, "mac");
+            return (Criteria) this;
+        }
+
+        public Criteria andMacNotLike(String value) {
+            addCriterion("f_MAC not like", value, "mac");
+            return (Criteria) this;
+        }
+
+        public Criteria andMacIn(List<String> values) {
+            addCriterion("f_MAC in", values, "mac");
+            return (Criteria) this;
+        }
+
+        public Criteria andMacNotIn(List<String> values) {
+            addCriterion("f_MAC not in", values, "mac");
+            return (Criteria) this;
+        }
+
+        public Criteria andMacBetween(String value1, String value2) {
+            addCriterion("f_MAC between", value1, value2, "mac");
+            return (Criteria) this;
+        }
+
+        public Criteria andMacNotBetween(String value1, String value2) {
+            addCriterion("f_MAC not between", value1, value2, "mac");
+            return (Criteria) this;
+        }
+
         public Criteria andIpadrIsNull() {
             addCriterion("f_IPADR is null");
             return (Criteria) this;

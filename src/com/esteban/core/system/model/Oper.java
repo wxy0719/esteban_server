@@ -7,6 +7,8 @@ import java.util.List;
 public class Oper {
     private String id;
 
+    private String userCode;
+
     private String name;
 
     private String passwd;
@@ -22,7 +24,7 @@ public class Oper {
     private String role;
 
     private String rights;
-    
+
     private List<String> listRights;
 
     public String getId() {
@@ -31,6 +33,14 @@ public class Oper {
 
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    public String getUserCode() {
+        return userCode;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode == null ? null : userCode.trim();
     }
 
     public String getName() {
@@ -96,14 +106,14 @@ public class Oper {
     public void setRights(String rights) {
         this.rights = rights == null ? null : rights.trim();
     }
-    
-    public List<String> getListRights() { 
-		if(!"".equals(this.getRights())&&null!=this.getRights()){
-			listRights=new ArrayList<String>(Arrays.asList(this.getRights().split(",")));
-		}
-		return listRights;
-	}
-	public void setListRights(List<String> listRights) {
-		this.listRights = listRights;
-	}
+
+    public List<String> getListRights() {
+        if(!"".equals(this.getRights())&&null!=this.getRights()){
+            listRights=new ArrayList<String>(Arrays.asList(this.getRights().split(",")));
+        }
+        return listRights;
+    }
+    public void setListRights(List<String> listRights) {
+        this.listRights = listRights;
+    }
 }

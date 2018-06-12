@@ -361,7 +361,7 @@ public class MD5 {
     
     /**
      * 获取加密后的字符串
-     * @param input
+     * @param pw
      * @return
      */
     public static String stringMD5(String pw) {
@@ -395,5 +395,5 @@ public class MD5 {
         // 字符数组组合成字符串返回
         return new String(resultCharArray);
     }
-   
+
 }

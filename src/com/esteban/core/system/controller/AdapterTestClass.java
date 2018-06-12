@@ -1,6 +1,7 @@
 package com.esteban.core.system.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.esteban.core.framework.utils.Base64Utils;
 import com.esteban.core.framework.utils.HttpClientUtil;
 import com.esteban.core.framework.utils.MD5;
 import com.esteban.core.framework.utils.Utility;
@@ -20,18 +21,21 @@ public class AdapterTestClass {
         JSONObject data = new JSONObject();
 
         //登录 10001
-//        data.put("userId", "admin");
-//        data.put("passwd", "123456");
+        data.put("userId", "admin");
+        data.put("passwd", "123456");
+
+        String dataStr=data.toJSONString();
+        dataStr = Base64Utils.base64Encode(dataStr);
 
         //获取权限 10002
-        data.put("token","eyd0eXAnOidKV1QnLCdhbGcnOidIUzI1Nid9.eydpc3MnOidlc3RlYmFuJywnc3ViJzonMScsJ2V4cCc6JzE4MDBzJywnaWF0JzonMTUyNzU3OTQ1MjgwMSd9.e28e256ace8152571dfe21634b651a52");
+//        data.put("token","eyd0eXAnOidKV1QnLCdhbGcnOidIUzI1Nid9.eydpc3MnOidlc3RlYmFuJywnc3ViJzonMScsJ2V4cCc6JzE4MDBzJywnaWF0JzonMTUyODUzMDI5Nzg4NCd9.3dec8637e43e842d6bd0f693dc9c68d8");
 
-        String ticket = MD5.stringMD5(millis+data.toJSONString());
+        String ticket = MD5.stringMD5(millis+dataStr);
 
         Map<String,String> params = new HashMap<>();
-        params.put("adapterNo", "10002");
+        params.put("adapterNo", "10001");
         params.put("ticket", ticket);
-        params.put("data", data.toJSONString());
+        params.put("data", dataStr);
         params.put("time", millis);
         params.put("token", "token");
 

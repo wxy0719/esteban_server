@@ -3,6 +3,7 @@
 <mapper namespace="com.esteban.core.system.dao.OperDao">
   <resultMap id="BaseResultMap" type="com.esteban.core.system.model.Oper">
     <result column="f_id" jdbcType="VARCHAR" property="id" />
+    <result column="f_user_code" jdbcType="VARCHAR" property="userCode" />
     <result column="f_name" jdbcType="VARCHAR" property="name" />
     <result column="f_passwd" jdbcType="VARCHAR" property="passwd" />
     <result column="f_des" jdbcType="VARCHAR" property="des" />
@@ -73,7 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    f_id, f_name, f_passwd, f_des, f_status, f_create_time, f_create_oper, f_role
+    f_id, f_user_code, f_name, f_passwd, f_des, f_status, f_create_time, f_create_oper, 
+    f_role
   </sql>
   <sql id="Blob_Column_List">
     f_rights
@@ -115,20 +117,23 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.esteban.core.system.model.Oper">
-    insert into t_oper (f_id, f_name, f_passwd, 
-      f_des, f_status, f_create_time, 
-      f_create_oper, f_role, f_rights
-      )
-    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{passwd,jdbcType=VARCHAR}, 
-      #{des,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
-      #{createOper,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}, #{rights,jdbcType=LONGVARCHAR}
-      )
+    insert into t_oper (f_id, f_user_code, f_name, 
+      f_passwd, f_des, f_status, 
+      f_create_time, f_create_oper, f_role, 
+      f_rights)
+    values (#{id,jdbcType=VARCHAR}, #{userCode,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{passwd,jdbcType=VARCHAR}, #{des,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=VARCHAR}, #{createOper,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}, 
+      #{rights,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.esteban.core.system.model.Oper">
     insert into t_oper
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         f_id,
+      </if>
+      <if test="userCode != null">
+        f_user_code,
       </if>
       <if test="name != null">
         f_name,
@@ -158,6 +163,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userCode != null">
+        #{userCode,jdbcType=VARCHAR},
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
@@ -197,6 +205,9 @@
       <if test="record.id != null">
         f_id = #{record.id,jdbcType=VARCHAR},
       </if>
+      <if test="record.userCode != null">
+        f_user_code = #{record.userCode,jdbcType=VARCHAR},
+      </if>
       <if test="record.name != null">
         f_name = #{record.name,jdbcType=VARCHAR},
       </if>
@@ -229,6 +240,7 @@
   <update id="updateByExampleWithBLOBs" parameterType="map">
     update t_oper
     set f_id = #{record.id,jdbcType=VARCHAR},
+      f_user_code = #{record.userCode,jdbcType=VARCHAR},
       f_name = #{record.name,jdbcType=VARCHAR},
       f_passwd = #{record.passwd,jdbcType=VARCHAR},
       f_des = #{record.des,jdbcType=VARCHAR},
@@ -244,6 +256,7 @@
   <update id="updateByExample" parameterType="map">
     update t_oper
     set f_id = #{record.id,jdbcType=VARCHAR},
+      f_user_code = #{record.userCode,jdbcType=VARCHAR},
       f_name = #{record.name,jdbcType=VARCHAR},
       f_passwd = #{record.passwd,jdbcType=VARCHAR},
       f_des = #{record.des,jdbcType=VARCHAR},
@@ -255,7 +268,6 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  
   <select id="listByPage" resultMap="BaseResultMap">
 	    select * from t_oper t
 	    	where 1=1

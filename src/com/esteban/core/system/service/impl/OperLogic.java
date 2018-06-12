@@ -2,6 +2,7 @@ package com.esteban.core.system.service.impl;
 
 import com.esteban.core.framework.utils.DateOperator;
 import com.esteban.core.framework.utils.IPUtils;
+import com.esteban.core.framework.utils.StringUtil;
 import com.esteban.core.framework.utils.TokenUtils;
 import com.esteban.core.framework.utils.UUID;
 import com.esteban.core.system.dao.OperDao;
@@ -51,7 +52,7 @@ public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOpe
 		return operDao;
 	}
 
-	public Map<String, String> login(Oper oper, String validateString, String deviceCode, HttpServletRequest req, HttpServletResponse res) {
+	public Map<String, String> login(Oper oper, String validateString, String deviceCode, String mac , HttpServletRequest req, HttpServletResponse res) {
 		Map<String, String> result = new HashMap<>();
 		String status = "400";
 		String message = "";
@@ -69,7 +70,7 @@ public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOpe
 				//修改登录记录
 				String loginTime = DateOperator.getNowDate();
 				String[] loginAddr = IPUtils.getAreaAndAreaSubByIPInSina(req.getRemoteAddr());
-				updateUserLoginInfo(oper.getId(), req.getRemoteAddr(), "WEB", loginTime, loginAddr[0], loginAddr[1], token);
+				updateUserLoginInfo(oper.getUserCode(), req.getRemoteAddr(), mac , "WEB", loginTime, loginAddr[0], loginAddr[1], token);
 
 				//登录验证完成
 				status = "200";
@@ -89,6 +90,44 @@ public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOpe
 		return result;
 	}
 
+    public Map<String, String> refreshLogin(Oper oper, LoginLog loginLog, String mac, HttpServletRequest req, HttpServletResponse res) {
+        Map<String, String> result = new HashMap<>();
+        String status = "400";
+        String message = "";
+        String token = loginLog.getToken();
+
+        if ("1001".equals(oper.getStatus())) {
+            if (!StringUtil.isBlank(mac)&&mac.equalsIgnoreCase(loginLog.getMac())) {
+                //生成token
+                //token = TokenUtils.getToken(oper.getId(),"");
+
+                // 增加登录日志
+                log.info("用户[" + oper.getName() + "]: " + DateOperator.format(new Date(), "yyyy-MM-dd HH:mm:ss") + "登陆,Ip:[" + req.getRemoteAddr() + "] ");
+                saveLog(oper.getName(), "登录成功[" + oper.getName() + "]", req.getRemoteAddr());
+
+                //修改登录记录
+                String loginTime = DateOperator.getNowDate();
+                String[] loginAddr = IPUtils.getAreaAndAreaSubByIPInSina(req.getRemoteAddr());
+                updateUserLoginInfo(oper.getUserCode(), req.getRemoteAddr(), mac , "WEB", loginTime, loginAddr[0], loginAddr[1], token);
+
+                //登录验证完成
+                status = "200";
+                message = "登录成功";
+            } else {
+                message = "登录失效，请重新登录";
+            }
+        } else if ("1002".equals(oper.getStatus())) {
+            message="用户未启用";
+        } else {
+            message="用户已失效";
+        }
+
+        result.put("status",status);
+        result.put("message",message);
+        result.put("token",token);
+        return result;
+    }
+
 	public void saveLog(String operUser, String info, String remoteAddr) {
 		if(!StringUtils.isBlank(operUser)){
 			String logid=UUID.getUUID().toString();
@@ -102,7 +141,7 @@ public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOpe
 		}
 	}
 
-	public void updateUserLoginInfo(String userid, String remoteAddr, String type, String loginTime, String provName, String areaName, String token) {
+	public void updateUserLoginInfo(String userid, String remoteAddr, String mac, String type, String loginTime, String provName, String areaName, String token) {
 		//判断是否有该用户的登录记录
 		LoginLogExample loginExm=new LoginLogExample();
 		loginExm.createCriteria().andUseridEqualTo(userid);
@@ -116,6 +155,7 @@ public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOpe
 			loginLog.setId(logid);
 			loginLog.setAreaname(areaName);
 			loginLog.setIpadr(remoteAddr);
+            loginLog.setMac(mac);
 			loginLog.setProvname(provName);
 			loginLog.setTime(loginTime);
 			loginLog.setType(type);
@@ -127,6 +167,7 @@ public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOpe
 			//如果已有记录，则更新这条记录的对应信息
 			l.setAreaname(areaName);
 			l.setIpadr(remoteAddr);
+            l.setMac(mac);
 			l.setProvname(provName);
 			l.setTime(loginTime);
 			l.setType(type);
