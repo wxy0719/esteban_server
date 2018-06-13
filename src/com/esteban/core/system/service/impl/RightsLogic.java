@@ -8,6 +8,7 @@ import com.esteban.core.framework.utils.Utility;
 import com.esteban.core.framework.utils.WebUtils;
 import com.esteban.core.system.dao.RightsDao;
 import com.esteban.core.system.dao.base.IDao;
+import com.esteban.core.system.model.LoginLog;
 import com.esteban.core.system.model.Rights;
 import com.esteban.core.system.model.RightsExample;
 import com.esteban.core.system.service.IRightsLogic;
@@ -52,8 +53,8 @@ public class RightsLogic extends BaseServiceImpl<Rights,RightsExample> implement
             }
 
             String token = dataJson.getString("token");
-            boolean isTokenVaild = WebUtils.checkTokenIsValid(token);
-            if(!isTokenVaild){
+            LoginLog log = WebUtils.checkTokenIsValid(token);
+            if(log==null){
                 result.put("code","403");
                 result.put("message","token无效或用户未登录！");
                 return result;

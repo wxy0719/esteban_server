@@ -3,7 +3,6 @@ package com.esteban.core.system.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.esteban.core.framework.utils.Base64Utils;
 import com.esteban.core.framework.utils.DateOperator;
-import com.esteban.core.framework.utils.MD5;
 import com.esteban.core.framework.utils.StringUtil;
 import com.esteban.core.framework.utils.Utility;
 import com.esteban.core.framework.utils.WebUtils;
@@ -78,7 +77,6 @@ public class LoginLogic implements ILoginLogic{
                 return result;
             }
 
-            String validateString = MD5.stringMD5(passwd);
             OperExample operEmp=new OperExample();
             operEmp.or().andNameEqualTo(userId);
             List<Oper> list=operLogic.detail(operEmp);
@@ -87,7 +85,7 @@ public class LoginLogic implements ILoginLogic{
                 oper=list.get(0);
             }
             if (oper != null) {
-                Map<String, String> rtn =operLogic.login(oper,validateString,deviceCode,mac,request,response);
+                Map<String, String> rtn =operLogic.login(oper,passwd,deviceCode,mac,request,response);
                 if("200".equals(rtn.get("status"))){
                     result.put("message", rtn.get("message"));
                     result.put("status","200");
@@ -123,7 +121,6 @@ public class LoginLogic implements ILoginLogic{
             String token = dataJson.getString("token");
             String mac = dataJson.getString("mac");
 
-            String message="";
             String sevenDayBeforeTime = DateOperator.getOffsetDayDate(-7,"yyyy-MM-dd HH:mm:ss");
             LoginLogExample logEmp = new LoginLogExample();
             logEmp.createCriteria().andUseridEqualTo(userId).andTokenEqualTo(token).andTimeGreaterThanOrEqualTo(sevenDayBeforeTime);

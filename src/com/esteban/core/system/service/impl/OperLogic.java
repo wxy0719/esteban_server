@@ -1,14 +1,19 @@
 package com.esteban.core.system.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.esteban.core.framework.utils.Base64Utils;
 import com.esteban.core.framework.utils.DateOperator;
 import com.esteban.core.framework.utils.IPUtils;
 import com.esteban.core.framework.utils.StringUtil;
 import com.esteban.core.framework.utils.TokenUtils;
 import com.esteban.core.framework.utils.UUID;
+import com.esteban.core.framework.utils.Utility;
+import com.esteban.core.framework.utils.WebUtils;
 import com.esteban.core.system.dao.OperDao;
 import com.esteban.core.system.dao.base.IDao;
 import com.esteban.core.system.model.LoginLog;
 import com.esteban.core.system.model.LoginLogExample;
+import com.esteban.core.system.model.MenuTree;
 import com.esteban.core.system.model.Oper;
 import com.esteban.core.system.model.OperExample;
 import com.esteban.core.system.model.OperateLog;
@@ -46,6 +51,9 @@ public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOpe
 	
 	@Resource
 	private ILoginLogLogic loginLogLogic;
+
+    @Resource
+    private MenuTreeLogic menuTreeLogic;
 
 	@Override
 	public IDao getDao() {
@@ -146,7 +154,7 @@ public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOpe
 		LoginLogExample loginExm=new LoginLogExample();
 		loginExm.createCriteria().andUseridEqualTo(userid);
 		LoginLog l = loginLogLogic.detailFirst(loginExm);
-        String expireSecond="1800";
+        String expireSecond="1800000";
 
 		if(l==null){
 			//如果没有记录，则插入一条记录
@@ -196,7 +204,7 @@ public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOpe
 		
 		RoleExample roleEmp=new RoleExample();
 		roleEmp.or().andIdEqualTo(op.getRole());
-		Role role=roleLogic.detail(roleEmp).get(0);
+		Role role=roleLogic.detailWithBlob(roleEmp).get(0);
 		
 		if(role!=null&&!"2".equals(role.getStatus())){
 			List<String> roleRights=role.getListRights();
@@ -222,5 +230,71 @@ public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOpe
 		operRightString=operRightString.substring(0, operRightString.length()-1);
 		return operRightString;
 	}
+
+    /**
+     * 主页获取用户信息接口。
+     * @param request
+     * @param response
+     * @return
+     */
+    @Override
+    public Object getOperInfo(HttpServletRequest request, HttpServletResponse response) {
+        Map<String,Object> result=new HashMap<>();
+
+        String dataStr = request.getParameter("data");
+        dataStr = Base64Utils.base64Decode(dataStr);
+
+        if(Utility.isNotEmpty(dataStr)) {
+            JSONObject dataJson = JSONObject.parseObject(dataStr);
+            if (!Utility.validRequestPara(new String[]{"token"}, dataJson)) {
+                result.put("code", "500");
+                result.put("msg", "data中缺少必要参数");
+                return result;
+            }
+
+            String token = dataJson.getString("token");
+
+            String sevenDayBeforeTime = DateOperator.getOffsetDayDate(-7,"yyyy-MM-dd HH:mm:ss");
+            LoginLogExample logEmp = new LoginLogExample();
+            logEmp.createCriteria().andTokenEqualTo(token).andTimeGreaterThanOrEqualTo(sevenDayBeforeTime);
+            LoginLog log = loginLogLogic.detailFirst(logEmp);
+            if (log == null) {
+                result.put("message", "登录已失效，请重新登录");
+                result.put("status", "403");
+            }
+
+            OperExample operEmp=new OperExample();
+            operEmp.createCriteria().andUserCodeEqualTo(log.getUserid());
+            List<Oper> list=detail(operEmp);
+            Oper oper = null;
+            if(list!=null&&list.size()>0){
+                oper=list.get(0);
+            }
+            if (oper != null) {
+                oper.setPasswd(null);
+                List<String> rights=getOperRights(oper);
+                oper.setListRights(rights);
+
+                List<MenuTree> menus=menuTreeLogic.queryTreeMenu("0","0",rights);
+                String str="[";
+                for(MenuTree m:menus){
+                    str+="['true','"+m.getName()+"',"+"'"+(StringUtil.isBlank(m.getUrl())?"javascript:;":m.getUrl())+"','"+m.getId()+"','0'],";
+                }
+                if(str.endsWith(",")){
+                    str=str.substring(0,str.length()-1);
+                }
+                str+="]";
+
+                result.put("message","用户信息获取成功");
+                result.put("menuList",str);
+                result.put("userInfo",oper);
+                result.put("status","200");
+            } else {
+                result.put("message", "用户不存在");
+                result.put("status","500");
+            }
+        }
+        return result;
+    }
 
 }

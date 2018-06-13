@@ -35,9 +35,9 @@ public class WebUtils {
     public static final String AGENT_OPER = "webUser";
     public static final String AGENT_ANDROID = "AgentClient";
 
-    public static boolean checkTokenIsValid(String token){
+    public static LoginLog checkTokenIsValid(String token){
         ILoginLogLogic loginLogLogic=(ILoginLogLogic)SpringBeanFactory.getBean("loginLogLogic");
-        return loginLogLogic.checkTokenIsValid(token)!=null?true:false;
+        return loginLogLogic.checkTokenIsValid(token);
     }
 
     public static Oper getOper(String token){
