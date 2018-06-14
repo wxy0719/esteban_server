@@ -2,9 +2,11 @@ package com.esteban.core.system.controller;
 
 import com.esteban.core.framework.utils.Base64Utils;
 import com.esteban.core.framework.utils.MD5;
+import com.esteban.core.framework.utils.RedisUtils;
 import com.esteban.core.framework.utils.SpringBeanFactory;
 import com.esteban.core.framework.utils.StringUtil;
 import com.esteban.core.framework.utils.Utility;
+import com.esteban.core.framework.utils.WebUtils;
 import com.esteban.core.system.model.InterfaceAdapter;
 import com.esteban.core.system.model.InterfaceAdapterExample;
 import com.esteban.core.system.service.IInterfaceAdapterLogic;
@@ -32,6 +34,8 @@ public class InterfaceAdapterController {
 
     @Resource
     private IInterfaceAdapterLogic interfaceAdapterLogic;
+    @Resource
+    RedisUtils redisUtils;
 
     /**
      * 判断数据是否符合格式，并包含必要的数据 【data，adapterNo，time，validator，token】

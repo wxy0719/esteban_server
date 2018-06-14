@@ -1,10 +1,11 @@
 package com.esteban.core.framework.utils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.esteban.core.system.model.Config;
-import com.esteban.core.system.model.ConfigExample;
 import com.esteban.core.system.model.LoginLog;
+import com.esteban.core.system.model.MenuTree;
 import com.esteban.core.system.model.Oper;
-import com.esteban.core.system.service.IConfigLogic;
 import com.esteban.core.system.service.ILoginLogLogic;
 import com.esteban.core.system.service.IOperLogic;
 import net.sf.json.JSONObject;
@@ -19,6 +20,8 @@ import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -213,14 +216,39 @@ public class WebUtils {
     }
 
     public static String getConfigValByName(String name){
-        String val="";
-        IConfigLogic configLogic=(IConfigLogic)SpringBeanFactory.getBean("configLogic");
-        ConfigExample conEmp=new ConfigExample();
-        conEmp.or().andNameEqualTo(name);
-        Config con=configLogic.detailFirst(conEmp);
+        Config con=getConfigByName(name);
         if(con!=null){
-            val=con.getValue();
+            return con.getValue();
         }
-        return val;
+        return "";
+    }
+
+    public static Config getConfigByName(String name){
+        RedisUtils redisUtils = (RedisUtils) SpringBeanFactory.getBean("redisUtils");
+        Config con = JSON.parseObject(redisUtils.get(name),Config.class);
+        return con;
+    }
+
+    public static List<MenuTree> getMenuByRights(String parentId, List<String> rights) {
+        List<MenuTree> list= new ArrayList<>();
+
+        RedisUtils redisUtils = (RedisUtils) SpringBeanFactory.getBean("redisUtils");
+        String menuListStr = redisUtils.get(parentId);
+        JSONArray menuListArr = JSON.parseArray(menuListStr);
+        for(int i=0;i<menuListArr.size();i++){
+            MenuTree menu = menuListArr.getObject(i,MenuTree.class);
+            if(rights.contains(menu.getRightNo())){
+                list.add(menu);
+            }
+        }
+        Collections.sort(list,new Comparator<MenuTree>() {
+            @Override
+            public int compare(MenuTree o1, MenuTree o2) {
+                int i = Integer.parseInt(o1.getOrder()) - Integer.parseInt(o2.getOrder());
+                return i;
+            }
+        });
+
+        return list;
     }
 }

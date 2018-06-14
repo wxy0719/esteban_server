@@ -275,7 +275,7 @@ public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOpe
                 List<String> rights=getOperRights(oper);
                 oper.setListRights(rights);
 
-                List<MenuTree> menus=menuTreeLogic.queryTreeMenu("0","0",rights);
+                List<MenuTree> menus=WebUtils.getMenuByRights("0",rights);
                 String str="[";
                 for(MenuTree m:menus){
                     str+="['true','"+m.getName()+"',"+"'"+(StringUtil.isBlank(m.getUrl())?"javascript:;":m.getUrl())+"','"+m.getId()+"','0'],";

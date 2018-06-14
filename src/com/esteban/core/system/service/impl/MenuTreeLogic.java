@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.alibaba.fastjson.JSONObject;
 import com.esteban.core.framework.utils.Base64Utils;
 import com.esteban.core.framework.utils.DateOperator;
+import com.esteban.core.framework.utils.RedisUtils;
 import com.esteban.core.framework.utils.StringUtil;
 import com.esteban.core.framework.utils.Utility;
 import com.esteban.core.framework.utils.WebUtils;
@@ -43,8 +44,8 @@ public class MenuTreeLogic extends BaseServiceImpl<MenuTree,MenuTreeExample> imp
 		return menuTreeDao;
 	}
 
-	public List<MenuTree> queryTreeMenu(String grade, String parentNode, List<String> rights) {
-		return menuTreeDao.queryMenuTree(grade,parentNode,rights);
+	public List<MenuTree> queryTreeMenu(String parentNode, List<String> rights) {
+		return menuTreeDao.queryMenuTree(parentNode,rights);
 	}
 
     @Override
@@ -83,7 +84,7 @@ public class MenuTreeLogic extends BaseServiceImpl<MenuTree,MenuTreeExample> imp
             if (oper != null) {
                 List<String> rights=operLogic.getOperRights(oper);
 
-                List<MenuTree> menus=queryTreeMenu((Integer.parseInt(grade)+1)+"",parentId,rights);
+                List<MenuTree> menus=WebUtils.getMenuByRights(parentId,rights);
                 String str="[";
                 for(MenuTree m:menus){
                     if("Y".equalsIgnoreCase(m.getIsforder())){
@@ -91,7 +92,13 @@ public class MenuTreeLogic extends BaseServiceImpl<MenuTree,MenuTreeExample> imp
                     }else{
                         str+="['false',";
                     }
-                    str+="'"+m.getName()+"',"+"'"+(StringUtil.isBlank(m.getUrl())?"javascript:;":m.getUrl())+"','"+m.getId()+"','"+Integer.parseInt(grade)+1+"'],";
+                    str+="'"+m.getName()+"',";
+                    if("Y".equalsIgnoreCase(m.getIsforder())){
+                        str+="'javascript:;',";
+                    }else{
+                        str+="'"+(StringUtil.isBlank(m.getUrl())?"javascript:;":m.getUrl())+"',";
+                    }
+                    str+="'"+m.getId()+"','"+(Integer.parseInt(grade)+1)+"'],";
                 }
                 if(str.endsWith(",")){
                     str=str.substring(0,str.length()-1);
@@ -108,6 +115,11 @@ public class MenuTreeLogic extends BaseServiceImpl<MenuTree,MenuTreeExample> imp
 
         }
         return result;
+    }
+
+    @Override
+    public List<Map<String, String>> getDistinctParentId(boolean isShowAllData) {
+        return menuTreeDao.getDistinctParentId(isShowAllData);
     }
 
 }

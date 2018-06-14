@@ -235,15 +235,22 @@
   
   <select id="queryMenuTree" resultMap="BaseResultMap">
 		select t.* from t_menutree t
-			where t.f_node_grade = (#{grade}+1)
-				and t.f_parent_node = #{parentNode}
-				and t.f_status = '1'
+			where t.f_parent_node = #{parentNode}
+				and t.f_status = '1001'
 				<if test="rights != null">
 					and t.f_right_no in 
 					<foreach item="right" collection="rights" open="(" separator="," close=")">
 		              #{right}
 		            </foreach>
 				</if>
-            order by t.f_order
+            order by t.f_order+0
 	</select>
+
+    <select id="getDistinctParentId" resultType="java.util.HashMap">
+        select DISTINCT(t.f_parent_node) as parentId from t_menutree t
+            where 1=1
+            <if test="!isShowAllData">
+                and t.f_status = '1001'
+            </if>
+    </select>
 </mapper>

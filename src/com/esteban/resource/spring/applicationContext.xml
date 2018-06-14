@@ -20,6 +20,7 @@
 
 	<context:component-scan base-package="com.esteban.**.controller.**" />
 	<context:component-scan base-package="com.esteban.**.service.**" />
+    <context:component-scan base-package="com.esteban.**.utils.**" />
 	<context:component-scan base-package="com.esteban.**.dao.**" />
 
 	<mvc:annotation-driven>
@@ -156,5 +157,8 @@
         <aop:pointcut id="transactionPointcut" expression="execution(* com.esteban..*Impl.*(..))" />
         <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" />
     </aop:config>
+
+    <!-- 引入同文件夹下的redis属性配置文件 -->
+    <import resource="../redis/redis-context.xml"/>
 
 </beans>
