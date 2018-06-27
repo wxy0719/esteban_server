@@ -38,7 +38,7 @@ import java.util.Map;
 
 @Service
 public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOperLogic {
-	private static final Logger log = Logger.getLogger(OperLogic.class);
+    private static final Logger log = Logger.getLogger(OperLogic.class);
 
 	@Resource
 	private OperDao operDao;
@@ -254,7 +254,7 @@ public class OperLogic extends BaseServiceImpl<Oper,OperExample> implements IOpe
 
             String token = dataJson.getString("token");
 
-            String sevenDayBeforeTime = DateOperator.getOffsetDayDate(-7,"yyyy-MM-dd HH:mm:ss");
+            String sevenDayBeforeTime = DateOperator.getOffsetDayDate(-7, "yyyy-MM-dd HH:mm:ss");
             LoginLogExample logEmp = new LoginLogExample();
             logEmp.createCriteria().andTokenEqualTo(token).andTimeGreaterThanOrEqualTo(sevenDayBeforeTime);
             LoginLog log = loginLogLogic.detailFirst(logEmp);

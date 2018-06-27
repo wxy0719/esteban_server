@@ -1,21 +1,24 @@
 package com.esteban.core.system.controller;
 
-import com.esteban.core.framework.utils.Base64Utils;
+import com.esteban.core.framework.utils.DateOperator;
 import com.esteban.core.framework.utils.MD5;
 import com.esteban.core.framework.utils.RedisUtils;
 import com.esteban.core.framework.utils.SpringBeanFactory;
 import com.esteban.core.framework.utils.StringUtil;
 import com.esteban.core.framework.utils.Utility;
-import com.esteban.core.framework.utils.WebUtils;
 import com.esteban.core.system.model.InterfaceAdapter;
 import com.esteban.core.system.model.InterfaceAdapterExample;
 import com.esteban.core.system.service.IInterfaceAdapterLogic;
+import com.esteban.core.system.service.base.activeMQ.MessageMQConsumer;
+import com.esteban.core.system.service.base.activeMQ.MessageMQReceiver;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.jms.Destination;
+import javax.jms.TextMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.InvocationTargetException;
@@ -32,6 +35,12 @@ public class InterfaceAdapterController {
 
     private static final Logger log = Logger.getLogger(InterfaceAdapterController.class);
 
+    @Resource
+    private Destination messageDestination;
+    @Resource
+    private MessageMQReceiver mqReceiver;
+    @Resource
+    private MessageMQConsumer mqConsumer;
     @Resource
     private IInterfaceAdapterLogic interfaceAdapterLogic;
     @Resource
@@ -56,6 +65,9 @@ public class InterfaceAdapterController {
         String time= request.getParameter("time");
         String ticket= request.getParameter("ticket");
         String token= request.getParameter("token");
+
+//        mqReceiver.sendMessage(messageDestination,"我是一个消息！北京时间为："+ DateOperator.getNowDate());
+        TextMessage tm = mqConsumer.receive(messageDestination);
 
         //校验参数
         if(Utility.isEmpty(data)){

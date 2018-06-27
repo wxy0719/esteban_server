@@ -22,7 +22,7 @@ public class AdapterTestClass {
 
         //登录 10001
         data.put("userId", "admin");
-        data.put("passwd", "123456");
+        data.put("passwd", "E10ADC3949BA59ABBE56E057F20F883E");
 
         String dataStr=data.toJSONString();
         dataStr = Base64Utils.base64Encode(dataStr);
