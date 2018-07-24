@@ -20,8 +20,9 @@
 
     <context:component-scan base-package="com.esteban.core.system.service.base.activeMQ" />
     <mvc:annotation-driven />
+
     <amq:connectionFactory id="amqConnectionFactory"
-        brokerURL="tcp://127.0.0.1:61616"
+        brokerURL="tcp://127.0.0.1:51511"
         userName="admin"
         password="admin" />
 
@@ -43,6 +44,7 @@
     <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
         <property name="connectionFactory" ref="connectionFactory" />
         <property name="defaultDestination" ref="demoQueueDestination" />
+        <property name="defaultDestinationName" value="defaultDestinationName" />
         <property name="receiveTimeout" value="10000" />
         <!-- true是topic，false是queue，默认是false，此处显示写出false -->
         <property name="pubSubDomain" value="false" />

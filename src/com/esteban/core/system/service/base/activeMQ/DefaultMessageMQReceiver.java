@@ -12,7 +12,7 @@ import javax.jms.TextMessage;
  * Created by CPR269 on 2018/6/27.
  */
 @Service
-public class MessageMQConsumer {
+public class DefaultMessageMQReceiver {
 
     @Resource(name = "jmsTemplate")
     private JmsTemplate jmsTemplate;

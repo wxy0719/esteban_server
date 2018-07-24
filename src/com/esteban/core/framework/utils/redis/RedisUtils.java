@@ -1,7 +1,7 @@
-package com.esteban.core.framework.utils;
+package com.esteban.core.framework.utils.redis;
 
 import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,7 +16,7 @@ public class RedisUtils {
 
     //配置文件中注入SpringRedisTemplate
     @Resource
-    private StringRedisTemplate redisTemplate;
+    private RedisTemplate redisTemplate;
 
     /**
      *  删除key和value
@@ -28,10 +28,19 @@ public class RedisUtils {
     /**
      *  根据key获取value
      */
-    public String get(String key){
-        String value = redisTemplate.opsForValue().get(key);
+    public Object getObject(String key){
+        Object value = redisTemplate.opsForValue().get(key);
         return value;
     }
+
+    /**
+     *  根据key获取value
+     */
+    public String getString(String key){
+        String value = redisTemplate.opsForValue().get(key)==null?"":redisTemplate.opsForValue().get(key).toString();
+        return value;
+    }
+
 
     /**
      *  将key和value存入redis，并设置有效时间，单位：天

@@ -14,7 +14,7 @@ import javax.jms.Session;
  * Created by CPR269 on 2018/6/27.
  */
 @Service
-public class MessageMQReceiver {
+public class DefaultMessageMQSender {
 
     @Resource(name = "jmsTemplate")
     private JmsTemplate jmsTemplate;
@@ -24,23 +24,9 @@ public class MessageMQReceiver {
         MessageCreator messageCreator = new MessageCreator() {
             public Message createMessage(Session session) throws JMSException {
                 return session.createTextMessage(msg);
-
             }
         };
         jmsTemplate.send(destination, messageCreator);
-    }
-
-    public void sendMessage(final String msg) {
-        String destination = jmsTemplate.getDefaultDestinationName().toString();
-        System.out.println("Send " + msg + " to Destination " + destination);
-        MessageCreator messageCreator = new MessageCreator() {
-
-            public Message createMessage(Session session) throws JMSException {
-                return session.createTextMessage(msg);
-
-            }
-        };
-        jmsTemplate.send(messageCreator);
     }
 
 }

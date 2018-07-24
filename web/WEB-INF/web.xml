@@ -23,7 +23,6 @@
   		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			classpath*:com/esteban/resource/spring/applicationContext.xml;
-            classpath*:com/esteban/resource/activeMq/activeMq.xml
         </param-value>
   	</context-param>
 

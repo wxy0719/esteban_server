@@ -73,6 +73,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  *  	//rowData.get(0); rowData.get(1);...
  *  }
  * });
+ * List<Map<String,Object>> list=articleLogic.queryAllByPage(art, webPage);
+   ExcelKit.$Export(res).toExcelMap(list, null, "文章详情导出", "queryArticle");
  * </pre>
  * @author wuwz
  */

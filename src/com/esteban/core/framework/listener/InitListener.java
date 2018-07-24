@@ -1,8 +1,9 @@
 package com.esteban.core.framework.listener;
 
 import com.alibaba.fastjson.JSON;
-import com.esteban.core.framework.utils.RedisUtils;
 import com.esteban.core.framework.utils.SpringBeanFactory;
+import com.esteban.core.framework.utils.activeMQ.MqConnectionFactory;
+import com.esteban.core.framework.utils.redis.RedisUtils;
 import com.esteban.core.system.model.Config;
 import com.esteban.core.system.model.ConfigExample;
 import com.esteban.core.system.model.MenuTree;
@@ -52,6 +53,9 @@ public class InitListener extends HttpServlet implements ServletContextListener,
             SpringBeanFactory.setBf(WebApplicationContextUtils.getRequiredWebApplicationContext(sce.getServletContext()));
 
             RedisUtils redisUtils = (RedisUtils) SpringBeanFactory.getBean("redisUtils");
+
+            //创建activemq连接池
+            MqConnectionFactory.init();
 
             // 将菜单数据写入redis
             IMenuTreeLogic menuTreeLogic=(IMenuTreeLogic)SpringBeanFactory.getBean("menuTreeLogic");

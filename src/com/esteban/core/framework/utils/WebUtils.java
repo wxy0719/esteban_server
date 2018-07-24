@@ -2,6 +2,7 @@ package com.esteban.core.framework.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.esteban.core.framework.utils.redis.RedisUtils;
 import com.esteban.core.system.model.Config;
 import com.esteban.core.system.model.LoginLog;
 import com.esteban.core.system.model.MenuTree;
@@ -225,7 +226,7 @@ public class WebUtils {
 
     public static Config getConfigByName(String name){
         RedisUtils redisUtils = (RedisUtils) SpringBeanFactory.getBean("redisUtils");
-        Config con = JSON.parseObject(redisUtils.get(name),Config.class);
+        Config con = JSON.parseObject(redisUtils.getString(name),Config.class);
         return con;
     }
 
@@ -233,7 +234,7 @@ public class WebUtils {
         List<MenuTree> list= new ArrayList<>();
 
         RedisUtils redisUtils = (RedisUtils) SpringBeanFactory.getBean("redisUtils");
-        String menuListStr = redisUtils.get(parentId);
+        String menuListStr = redisUtils.getString(parentId);
         JSONArray menuListArr = JSON.parseArray(menuListStr);
         for(int i=0;i<menuListArr.size();i++){
             MenuTree menu = menuListArr.getObject(i,MenuTree.class);
